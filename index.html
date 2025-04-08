@@ -1,20 +1,75 @@
+<!DOCTYPE html>
+<html>
 <head>
-   <title>RECEITAS</title>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content="This is a simple webpage with a heading.">
-   <!--<meta name="keywords" content="HTML, webpage, heading">-->
-   <link rel="shortcut icon" href="https://lh3.googleusercontent.com/a/ACg8ocI__Xp7t-3AONpJLg9XnplDLXzVpmqvY7mSFGFvXmOSDhMmCg=s360-c-no" type="image/png">
-   <lk relstyleseet" href="yle.css">                
- </head>
+<title>RECEITAS</title>
+<style>
+html {
+    font-family: sans-serif;
+  }
 
-<body style="font-family: sans-serif; margin: 0;">
-<h1 style="padding-top: 100px; text-align: center; font-size: 220%;">kevenzmn@gmail.com</h1>
+  .my-div {
+    border: 1px solid blue;
+    padding: 15px;
+    margin-bottom: 10px;
+  }
 
-<h1>NOME DO PACIENTE DN:10/00/2000 ACS:(NOME)</h1>
-<img src="images/SmartSelect_20250408_093942_Keep Notes.jpg">
-<h2>REMÉDIO 100mg ------ 30cp</h2>
+  .done {
+    background-color: lightgreen;
+    opacity: 0.7;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Receitas 08/04/2025</h1>
+
+  <div>
+<div id="targetDiv1" class="my-div">
+
+<h1 style="width:80%;">NOME DO PACIENTE DN:10/00/2000 ACS:(NOME)</h1>
+<img style="width:50%;"src="images/foto1.jpg">
+<h2>REMÉDIO 100mg -------------------- 30cp</h2>
 <h2>1 cp por dia</h2>
 <h2>Obs.:</h2>
-  
+
+</div>
+    <input type="checkbox" id="controlDiv1" onchange="markDivDone('controlDiv1', 'targetDiv1')">
+    <label for="controlDiv1">MARCAR COMO FEITO</label>
+    
+  </div>
+<br>
+<br>
+<br>
+<br>
+
+   <div>
+<div id="targetDiv2" class="my-div">
+
+<h1 style="width:80%;">NOME DO PACIENTE DN:10/00/2000 ACS:(NOME)</h1>
+<img style="width:50%;"src="images/foto2.jpg">
+<h2>REMÉDIO 100mg -------------------- 30cp</h2>
+<h2>1 cp por dia</h2>
+<h2>Obs.:</h2>
+
+</div>
+    <input type="checkbox" id="controlDiv2" onchange="markDivDone('controlDiv2', 'targetDiv2')">
+    <label for="controlDiv2">MARCAR COMO FEITO</label>
+    
+  </div>
+
+  <script>
+    function markDivDone(checkboxId, divId) {
+      const checkbox = document.getElementById(checkboxId);
+      const targetDiv = document.getElementById(divId);
+
+      if (checkbox.checked) {
+        targetDiv.classList.add('done');
+      } else {
+        targetDiv.classList.remove('done');
+      }
+    }
+  </script>
+
 </body>
+</html>
