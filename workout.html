@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>kevenzmn</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="This is a simple webpage with a heading.">
+   <!--<meta name="keywords" content="HTML, webpage, heading">-->
+   <link rel="shortcut icon" href="https://lh3.googleusercontent.com/a/ACg8ocI__Xp7t-3AONpJLg9XnplDLXzVpmqvY7mSFGFvXmOSDhMmCg=s360-c-no" type="image/png">
+<style>
+  body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .exercise {
+    width: 70%;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  }
+  .counter {
+    font-size: 1.5em;
+    margin-right: 10px;
+  }
+  button {
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Workout</h1>
+
+  <div class="exercise">
+    <h2>Pull-ups
+    <span style="font-size: 100%;" id="pull-ups-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('pull-ups', 2)">+2</button>
+    <button onclick="incrementCount('pull-ups', 5)">+5</button>
+  </div>
+
+  <div class="exercise">
+    <h2>Jump Ropes
+    <span style="font-size: 100%;" id="jump-ropes-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('jump-ropes', 2)">+2</button>
+    <button onclick="incrementCount('jump-ropes', 5)">+5</button>
+  </div>
+
+  <div class="exercise">
+    <h2>Push-ups
+    <span style="font-size: 100%;" id="push-ups-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('push-ups', 2)">+2</button>
+    <button onclick="incrementCount('push-ups', 5)">+5</button>
+  </div>
+
+  <div class="exercise">
+    <h2>Pistol Squats
+    <span style="font-size: 100%;" id="pistol-squats-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('pistol-squats', 2)">+2</button>
+    <button onclick="incrementCount('pistol-squats', 5)">+5</button>
+  </div>
+
+  <div class="exercise">
+    <h2>Back Pulls
+    <span style="font-size: 100%;" id="back-pulls-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('back-pulls', 2)">+2</button>
+    <button onclick="incrementCount('back-pulls', 5)">+5</button>
+  </div>
+
+  <script>
+    function incrementCount(exercise, value) {
+      const countElementId = exercise.toLowerCase().replace(/ /g, '-') + "-count";
+      const countElement = document.getElementById(countElementId);
+      let currentCount = parseInt(countElement.textContent);
+      currentCount += value;
+      countElement.textContent = currentCount;
+    }
+  </script>
+
+</body>
+</html>
