@@ -5,7 +5,6 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="description" content="This is a simple webpage with a heading.">
-   <!--<meta name="keywords" content="HTML, webpage, heading">-->
    <link rel="shortcut icon" href="https://lh3.googleusercontent.com/a/ACg8ocI__Xp7t-3AONpJLg9XnplDLXzVpmqvY7mSFGFvXmOSDhMmCg=s360-c-no" type="image/png">
 <style>
   body {
@@ -26,7 +25,7 @@
   }
   .counter {
     font-size: 1.5em;
-    margin-right: 10px;
+    margin-left: 5px;
   }
   button {
     padding: 8px 15px;
@@ -81,7 +80,21 @@
       let currentCount = parseInt(countElement.textContent);
       currentCount += value;
       countElement.textContent = currentCount;
+      localStorage.setItem(exercise.toLowerCase().replace(/ /g, '-'), currentCount.toString());
     }
+
+    // Initialize counters from localStorage
+    window.onload = function() {
+      const exercises = ['pull-ups', 'jump-ropes', 'push-ups', 'pistol-squats', 'back-pulls'];
+      exercises.forEach(exercise => {
+        const countElementId = exercise.toLowerCase().replace(/ /g, '-') + "-count";
+        const countElement = document.getElementById(countElementId);
+        const savedCount = localStorage.getItem(exercise.toLowerCase().replace(/ /g, '-'));
+        if (savedCount !== null) {
+          countElement.textContent = savedCount;
+        }
+      });
+    };
   </script>
 
 </body>
