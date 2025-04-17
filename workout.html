@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 <title>kevenzmn</title>
@@ -99,3 +99,164 @@
 
 </body>
 </html>
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>kevenzmn</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="This is a simple webpage with a heading.">
+   <link rel="shortcut icon" href="https://lh3.googleusercontent.com/a/ACg8ocI__Xp7t-3AONpJLg9XnplDLXzVpmqvY7mSFGFvXmOSDhMmCg=s360-c-no" type="image/png">
+<style>
+  body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .exercise {
+    width: 70%;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    position: relative; /* To position the progress bar correctly */
+  }
+  .counter {
+    font-size: 1.5em;
+    margin-left: 5px;
+  }
+  button {
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  .progress-bar-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background-color: #eee;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden; /* Hide the overflowing progress */
+  }
+  .progress-bar {
+    height: 100%;
+    background-color: #4CAF50; /* Green color for progress */
+    width: 0%; /* Initial width is 0 */
+    border-radius: 0 0 12px 12px;
+  }
+</style>
+</head>
+<body>
+
+  
+
+  <div class="exercise" data-target="10">
+    <h2>Pull-ups
+    <span style="font-size: 100%;" id="pull-ups-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('pull-ups', 2)">+2</button>
+    <button onclick="incrementCount('pull-ups', 5)">+5</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="pull-ups-progress"></div>
+    </div>
+  </div>
+
+  <div class="exercise" data-target="20">
+    <h2>Jump Ropes
+    <span style="font-size: 100%;" id="jump-ropes-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('jump-ropes', 2)">+2</button>
+    <button onclick="incrementCount('jump-ropes', 5)">+5</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="jump-ropes-progress"></div>
+    </div>
+  </div>
+
+  <div class="exercise" data-target="40">
+    <h2>Push-ups
+    <span style="font-size: 100%;" id="push-ups-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('push-ups', 2)">+2</button>
+    <button onclick="incrementCount('push-ups', 5)">+5</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="push-ups-progress"></div>
+    </div>
+  </div>
+
+  <div class="exercise" data-target="50">
+    <h2>Pistol Squats
+    <span style="font-size: 100%;" id="pistol-squats-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('pistol-squats', 2)">+2</button>
+    <button onclick="incrementCount('pistol-squats', 5)">+5</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="pistol-squats-progress"></div>
+    </div>
+  </div>
+
+  <div class="exercise" data-target="80">
+    <h2>Back Pulls
+    <span style="font-size: 100%;" id="back-pulls-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('back-pulls', 2)">+2</button>
+    <button onclick="incrementCount('back-pulls', 5)">+5</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="back-pulls-progress"></div>
+    </div>
+  </div>
+
+  <script>
+    function incrementCount(exercise, value) {
+      const countElementId = exercise.toLowerCase().replace(/ /g, '-') + "-count";
+      const progressBarId = exercise.toLowerCase().replace(/ /g, '-') + "-progress";
+      const countElement = document.getElementById(countElementId);
+      const progressBar = document.getElementById(progressBarId);
+      const exerciseDiv = countElement.closest('.exercise');
+      const target = parseInt(exerciseDiv.dataset.target);
+
+      let currentCount = parseInt(countElement.textContent);
+      currentCount += value;
+      countElement.textContent = currentCount;
+      localStorage.setItem(exercise.toLowerCase().replace(/ /g, '-'), currentCount.toString());
+
+      // Update progress bar
+      const progressPercentage = (currentCount / target) * 100;
+      progressBar.style.width = Math.min(progressPercentage, 100) + '%';
+    }
+
+    // Initialize counters and progress bars from localStorage
+    window.onload = function() {
+      const exercisesData = [
+        { name: 'pull-ups', target: 10 },
+        { name: 'jump-ropes', target: 20 },
+        { name: 'push-ups', target: 40 },
+        { name: 'pistol-squats', target: 50 },
+        { name: 'back-pulls', target: 80 }
+      ];
+
+      exercisesData.forEach(exerciseData => {
+        const countElementId = exerciseData.name.toLowerCase().replace(/ /g, '-') + "-count";
+        const progressBarId = exerciseData.name.toLowerCase().replace(/ /g, '-') + "-progress";
+        const countElement = document.getElementById(countElementId);
+        const progressBar = document.getElementById(progressBarId);
+        const exerciseDiv = countElement.closest('.exercise');
+
+        const savedCount = localStorage.getItem(exerciseData.name.toLowerCase().replace(/ /g, '-'));
+        if (savedCount !== null) {
+          countElement.textContent = savedCount;
+          const progressPercentage = (parseInt(savedCount) / exerciseData.target) * 100;
+          progressBar.style.width = Math.min(progressPercentage, 100) + '%';
+        } else {
+          progressBar.style.width = '0%'; // Initialize progress bar to 0 if no saved count
+        }
+        exerciseDiv.dataset.target = exerciseData.target; // Ensure target is set on load
+      });
+    };
+  </script>
+
+</body>
+</html>
+
