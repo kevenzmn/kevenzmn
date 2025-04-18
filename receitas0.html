@@ -293,11 +293,13 @@
     function markDivDone(checkboxId, divId) {
       const checkbox = document.getElementById(checkboxId);
       const targetDiv = document.getElementById(divId);
-
-      if (checkbox.checked) {
-        targetDiv.classList.add('done');
-      } else {
-        targetDiv.classList.remove('done');
+      const label = document.querySelector(`label[for="${checkboxId}"]`); // Encontra a label associada ao checkbox
+       if (checkbox.checked) {
+         targetDiv.classList.add('done');
+         label.textContent = 'DESMARCAR'; // Atualiza o texto da label
+       } else {
+         targetDiv.classList.remove('done');
+         label.textContent = 'MARCAR COMO FEITO'; // Atualiza o texto da label
       }
     }
   </script>
