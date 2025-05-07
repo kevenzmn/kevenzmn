@@ -9,12 +9,12 @@
   html {
     font-family: sans-serif;
     background-color: #5497ff;
-    backgrund-image: url("images/dood1.jpg");
+    ackground-image: url("images/dood1.jpg");
     ackgroundrepeat: no-repeat;
     background-size: contain;
     background-position: top left;
   }
-  
+
   img {
     border-radius: 12px;
   }
@@ -35,7 +35,7 @@
   .done {
     background-color: lightgreen;
   }
-  
+
   label {
   box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
   background-color: lightgreen;
@@ -44,22 +44,26 @@
   padding: 5px 10px;
   font-weight: bold;
   }
-  
+
+  .collapsed-content > *:not(h1:first-child) {
+    display: none;
+  }
+
 </style>
 </head>
 <!-- <!-- -->
 <body>
 
-<a href="defaultIndex.html" style="text-decoration: none; color: inherit;"><h1 style="box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5); background-color: white; border-radius: 12px; text-align: center; order: 2px solid black;">Receitas 00/00/0000</h1></a>
+<a href="defaultIndex.html" style="text-decoration: none; color: inherit;"><h1 style="box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5); background-color: white; border-radius: 12px; text-align: center; order: 2px solid black;">Receitas 07/05/2025</h1></a>
 
   <div>
 <div id="targetDiv1" class="my-div">
 
-<h1 style="widh:80%;"> Paciente ● DN: 00/00/0000</h1>
+<h1 style="widh:80%;"> DAVI KAUAN NOBRE DE MENEZES ● DN: 10/06/2014</h1>
 
 <a href="https://kevenzmn.github.io/kevenzmn/images/foto1.jpg" target="_blank" rel="noopener noreferrer">
 
-<img style="width:49%;"src="images/foto1.jpg"></a>
+<img style="width:50%;"src="images/foto1.jpg"></a>
 
 
 <h2></h2>
@@ -79,15 +83,13 @@
   </div>
   
 <br>
-<br>
-<br>
-<br>
+<!--
 
    <div>
 <div id="targetDiv2" class="my-div">
 
 <h1 style="widh:80%;">Paciente
- ● DN: 00/00/0000</h1>
+ ● DN: 10/06/2014</h1>
 <a href="https://kevenzmn.github.io/kevenzmn/images/foto2.jpg" target="_blank" rel="noopener noreferrer">
   
 <img style="width:49%;"src="images/foto2.jpg"></a>
@@ -95,7 +97,7 @@
 <a href="https://kevenzmn.github.io/kevenzmn/images/foto2.1.jpg" target="_blank" rel="noopener noreferrer">
  
 <img style="width:49%;"src="images/foto2.1.jpg"></a>
--->
+
 
 </div>
 
@@ -105,9 +107,9 @@
   </div>
   
 <br>
-<br>
-<br>
-<br>
+
+
+
 <!--
   <div>
 <div id="targetDiv3" class="my-div">
@@ -127,10 +129,10 @@
     <label for="controlDiv3">MARCAR COMO FEITO</label>
 
   </div>
+
+
 <br>
-<br>
-<br>
-<br>
+
 
   <div>
 <div id="targetDiv4" class="my-div">
@@ -150,10 +152,10 @@
     <label for="controlDiv4">MARCAR COMO FEITO</label>
 
   </div>
+
+
 <br>
-<br>
-<br>
-<br>
+
 
   <div>
 <div id="targetDiv5" class="my-div">
@@ -173,10 +175,10 @@
     <label for="controlDiv5">MARCAR COMO FEITO</label>
 
   </div>
+
+
 <br>
-<br>
-<br>
-<br>
+
 
   <div>
 <div id="targetDiv6" class="my-div">
@@ -196,10 +198,10 @@
     <label for="controlDiv6">MARCAR COMO FEITO</label>
 
   </div>
+
+
 <br>
-<br>
-<br>
-<br>
+
 
   <div>
 <div id="targetDiv7" class="my-div">
@@ -219,10 +221,10 @@
     <label for="controlDiv7">MARCAR COMO FEITO</label>
 
   </div>
+
+
 <br>
-<br>
-<br>
-<br>
+
 
   <div>
 <div id="targetDiv8" class="my-div">
@@ -242,10 +244,10 @@
     <label for="controlDiv8">MARCAR COMO FEITO</label>
 
   </div>
+
+
 <br>
-<br>
-<br>
-<br>
+
 
   <div>
 <div id="targetDiv9" class="my-div">
@@ -265,10 +267,10 @@
     <label for="controlDiv9">MARCAR COMO FEITO</label>
 
   </div>
+
+
 <br>
-<br>
-<br>
-<br>
+
 
   <div>
 <div id="targetDiv10" class="my-div">
@@ -297,13 +299,16 @@
     function markDivDone(checkboxId, divId) {
       const checkbox = document.getElementById(checkboxId);
       const targetDiv = document.getElementById(divId);
-      const label = document.querySelector(`label[for="${checkboxId}"]`); // Encontra a label associada ao checkbox
-       if (checkbox.checked) {
-         targetDiv.classList.add('done');
-         label.textContent = 'DESMARCAR'; // Atualiza o texto da label
-       } else {
-         targetDiv.classList.remove('done');
-         label.textContent = 'MARCAR COMO FEITO'; // Atualiza o texto da label
+      const label = document.querySelector(`label[for="${checkboxId}"]`);
+
+      if (checkbox.checked) {
+        targetDiv.classList.add('done');
+        targetDiv.classList.add('collapsed-content'); // Adiciona a classe para esconder o conteúdo
+        label.textContent = 'DESMARCAR';
+      } else {
+        targetDiv.classList.remove('done');
+        targetDiv.classList.remove('collapsed-content'); // Remove a classe para exibir o conteúdo completo
+        label.textContent = 'MARCAR COMO FEITO';
       }
     }
   </script>
