@@ -114,7 +114,7 @@
 <br>
 <br>
 
-<a href="defaultIndex.html" style="text-decoration: none; color: inherit;"><h1 style="box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5); background-color: white; border-radius: 12px; text-align: center; order: 2px solid black;">Ontem 13/05/2025</h1></a>
+<a href="defaultIndex.html" style="text-decoration: none; color: inherit;"><h1 style="box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5); background-color: white; border-radius: 12px; text-align: center; order: 2px solid black;">Receitas 13/05/2025</h1></a>
 
 
   <div>
@@ -294,20 +294,18 @@
     <source src="images/audio1.mp3" type="audio/mpeg">
   </audio>
  -->
+
   <script>
     function markDivDone(checkboxId, divId) {
       const checkbox = document.getElementById(checkboxId);
       const targetDiv = document.getElementById(divId);
-      const label = document.querySelector(`label[for="${checkboxId}"]`);
-
-      if (checkbox.checked) {
-        targetDiv.classList.add('done');
-        targetDiv.classList.add('collapsed-content'); // Adiciona a classe para esconder o conteúdo
-        label.textContent = 'DESMARCAR';
-      } else {
-        targetDiv.classList.remove('done');
-        targetDiv.classList.remove('collapsed-content'); // Remove a classe para exibir o conteúdo completo
-        label.textContent = 'MARCAR COMO FEITO';
+      const label = document.querySelector(`label[for="${checkboxId}"]`); // Encontra a label associada ao checkbox
+       if (checkbox.checked) {
+         targetDiv.classList.add('done');
+         label.textContent = 'DESMARCAR'; // Atualiza o texto da label
+       } else {
+         targetDiv.classList.remove('done');
+         label.textContent = 'MARCAR COMO FEITO'; // Atualiza o texto da label
       }
     }
   </script>
