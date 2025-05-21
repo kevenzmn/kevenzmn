@@ -61,19 +61,13 @@
     <span style="font-size: 100%;" id="pull-ups-count" class="counter">0</span></h2>
     <button onclick="incrementCount('pull-ups', -1)">-</button>
     <button onclick="incrementCount('pull-ups', 1)">+</button>
-   <!-- <div class="progress-bar-container">
-      <div class="progress-bar" id="pull-ups-progress"></div>
-    </div> -->
-  </div>
+   </div>
 
   <div class="exercise" data-target="20">
     <h2>Enfermeira
     <span style="font-size: 100%;" id="jump-ropes-count" class="counter">0</span></h2>
     <button onclick="incrementCount('jump-ropes', -1)">-</button>
     <button onclick="incrementCount('jump-ropes', 1)">+</button>
-  <!--  <div class="progress-bar-container">
-      <div class="progress-bar" id="jump-ropes-progress"></div>
-    </div> -->
   </div> 
 
   <div class="exercise" data-target="40">
@@ -81,47 +75,40 @@
     <span style="font-size: 100%;" id="push-ups-count" class="counter">0</span></h2>
     <button onclick="incrementCount('push-ups', -1)">-</button>
     <button onclick="incrementCount('push-ups', 1)">+</button>
- <!--   <div class="progress-bar-container">
-      <div class="progress-bar" id="push-ups-progress"></div>
-    </div> -->
-  </div>
-<!--
-  <div class="exercise" data-target="50">
-    <h2>Enfermeira AT
-    <span style="font-size: 100%;" id="pistol-squats-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('pistol-squats', -1)">-</button>
-    <button onclick="incrementCount('pistol-squats', 5)">+5</button>
-    <div class="progress-bar-container">
-      <div class="progress-bar" id="pistol-squats-progress"></div>
-    </div>
-  </div>
+ </div>
 
-  <div class="exercise" data-target="80">
-    <h2>Técnica
-    <span style="font-size: 100%;" id="back-pulls-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('back-pulls', -1)">-</button>
-    <button onclick="incrementCount('back-pulls', 1)">+</button>
-    <div class="progress-bar-container">
-      <div class="progress-bar" id="back-pulls-progress"></div>
-    </div>
+  <div class="exercise" data-target="50">
+    <h2>M
+    <span style="font-size: 100%;" id="m-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('m', -1)">-</button>
+    <button onclick="incrementCount('m', 1)">+</button>
   </div>
   
-   <div class="exercise" data-target="80">
-    <h2>Técnica AT
-    <span style="font-size: 100%;" id="back-pulls-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('back-pulls', -1)">-</button>
-    <button onclick="incrementCount('back-pulls', 1)">+</button>
-    <div class="progress-bar-container">
-      <div class="progress-bar" id="back-pulls-progress"></div>
-    </div>
+  <div class="exercise" data-target="50">
+    <h2>T
+    <span style="font-size: 100%;" id="e-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('e', -1)">-</button>
+    <button onclick="incrementCount('e', 1)">+</button>
   </div>
- -->
-  <script>
+  <!--
+  <div class="exercise" data-target="50">
+    <h2>T
+    <span style="font-size: 100%;" id="t-count" class="counter">0</span></h2>
+    <button onclick="incrementCount('t', -1)">-</button>
+    <button onclick="incrementCount('t', 1)">+</button>
+  </div>
+  -->
+<script>
     function incrementCount(exercise, value) {
       const countElementId = exercise.toLowerCase().replace(/ /g, '-') + "-count";
-      const progressBarId = exercise.toLowerCase().replace(/ /g, '-') + "-progress";
       const countElement = document.getElementById(countElementId);
-      const progressBar = document.getElementById(progressBarId);
+      
+      // Check if the element exists before trying to access its properties
+      if (!countElement) {
+        console.error("Count element not found for exercise:", exercise);
+        return; 
+      }
+
       const exerciseDiv = countElement.closest('.exercise');
       const target = parseInt(exerciseDiv.dataset.target);
 
@@ -130,9 +117,13 @@
       countElement.textContent = currentCount;
       localStorage.setItem(exercise.toLowerCase().replace(/ /g, '-'), currentCount.toString());
 
-      // Update progress bar
-      const progressPercentage = (currentCount / target) * 100;
-      progressBar.style.width = Math.min(progressPercentage, 100) + '%';
+      // Progress bar logic (currently commented out in HTML)
+      // const progressBarId = exercise.toLowerCase().replace(/ /g, '-') + "-progress";
+      // const progressBar = document.getElementById(progressBarId);
+      // if (progressBar) {
+      //   const progressPercentage = (currentCount / target) * 100;
+      //   progressBar.style.width = Math.min(progressPercentage, 100) + '%';
+      // }
     }
 
     // Initialize counters and progress bars from localStorage
@@ -141,26 +132,28 @@
         { name: 'pull-ups', target: 10 },
         { name: 'jump-ropes', target: 70 },
         { name: 'push-ups', target: 20 },
-        { name: 'pistol-squats', target: 5 },
-        { name: 'back-pulls', target: 5 }
+        { name: 'm', target: 50 },
+        { name: 'e', target: 50 },
+        { name: 't', target: 50 }
       ];
 
       exercisesData.forEach(exerciseData => {
         const countElementId = exerciseData.name.toLowerCase().replace(/ /g, '-') + "-count";
-        const progressBarId = exerciseData.name.toLowerCase().replace(/ /g, '-') + "-progress";
         const countElement = document.getElementById(countElementId);
-        const progressBar = document.getElementById(progressBarId);
-        const exerciseDiv = countElement.closest('.exercise');
+        
+        if (countElement) { // Only proceed if the element exists
+          const exerciseDiv = countElement.closest('.exercise');
 
-        const savedCount = localStorage.getItem(exerciseData.name.toLowerCase().replace(/ /g, '-'));
-        if (savedCount !== null) {
-          countElement.textContent = savedCount;
-          const progressPercentage = (parseInt(savedCount) / exerciseData.target) * 100;
-          progressBar.style.width = Math.min(progressPercentage, 100) + '%';
-        } else {
-          progressBar.style.width = '0%'; // Initialize progress bar to 0 if no saved count
+          const savedCount = localStorage.getItem(exerciseData.name.toLowerCase().replace(/ /g, '-'));
+          if (savedCount !== null) {
+            countElement.textContent = savedCount;
+          } else {
+            countElement.textContent = '0'; // Initialize to 0 if no saved count
+          }
+          if (exerciseDiv) {
+            exerciseDiv.dataset.target = exerciseData.target; // Ensure target is set on load
+          }
         }
-        exerciseDiv.dataset.target = exerciseData.target; // Ensure target is set on load
       });
     };
   </script>
