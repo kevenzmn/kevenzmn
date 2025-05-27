@@ -1,162 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<title>kevenzmn</title>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content="This is a simple webpage with a heading.">
-   <link rel="shortcut icon" href="https://lh3.googleusercontent.com/a/ACg8ocI__Xp7t-3AONpJLg9XnplDLXzVpmqvY7mSFGFvXmOSDhMmCg=s360-c-no" type="image/png">
-<style>
-  body {
-    background-color: #5497ff;
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .senhasexercise {
-    width: 70%;
-    margin-bottom: 20px;
-    text-align: center;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 12px;
-    background-color: white;
-    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
-    position: relative; /* To position the progress bar correctly */
-  }
-  .counter {
-    font-size: 1.5em;
-    margin-left: 5px;
-  }
-  button {
-    padding: 8px 15px;
-    margin: 5px;
-    cursor: pointer;
-  }
-  .progress-bar-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background-color: #eee;
-    border-radius: 0 0 12px 12px;
-    overflow: hidden; /* Hide the overflowing progress */
-  }
-  .progress-bar {
-    height: 100%;
-    background-color: #4CAF50; /* Green color for progress */
-    width: 0%; /* Initial width is 0 */
-    border-radius: 0 0 12px 12px;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Divs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+            gap: 20px; /* Espaço entre as divs */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-div {
+            border: 1px solid #ccc;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            background-color: #e9e9e9;
+        }
+
+        .item-div h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .counter {
+            font-size: 2em;
+            margin: 10px 0;
+            color: #007BFF;
+        }
+
+        .buttons button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s;
+        }
+
+        .buttons button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="item-div">
+            <h3>Médica</h3>
+            <div class="counter" id="counterA">0</div>
+            <div class="buttons">
+                <button onclick="changeCounter('counterA', -1)">-</button>
+                <button onclick="changeCounter('counterA', 1)">+</button>
+            </div>
+        </div>
+        <div class="item-div">
+            <h3>Atendeu</h3>
+            <div class="counter" id="counterB">0</div>
+            <div class="buttons">
+                <button onclick="changeCounter('counterB', -1)">-</button>
+                <button onclick="changeCounter('counterB', 1)">+</button>
+            </div>
+        </div>
+        <div class="item-div">
+            <h3>Enfermeira</h3>
+            <div class="counter" id="counterC">0</div>
+            <div class="buttons">
+                <button onclick="changeCounter('counterC', -1)">-</button>
+                <button onclick="changeCounter('counterC', 1)">+</button>
+            </div>
+        </div>
+        <div class="item-div">
+            <h3>Atendeu</h3>
+            <div class="counter" id="counterD">0</div>
+            <div class="buttons">
+                <button onclick="changeCounter('counterD', -1)">-</button>
+                <button onclick="changeCounter('counterD', 1)">+</button>
+            </div>
+        </div>
+        <div class="item-div">
+            <h3>Técnica</h3>
+            <div class="counter" id="counterE">0</div>
+            <div class="buttons">
+                <button onclick="changeCounter('counterE', -1)">-</button>
+                <button onclick="changeCounter('counterE', 1)">+</button>
+            </div>
+        </div>
+        <div class="item-div">
+            <h3>Atendeu</h3>
+            <div class="counter" id="counterF">0</div>
+            <div class="buttons">
+                <button onclick="changeCounter('counterF', -1)">-</button>
+                <button onclick="changeCounter('counterF', 1)">+</button>
+            </div>
+        </div>
+        <div class="item-div">
+            <h3>Item G</h3>
+            <div class="counter" id="counterG">0</div>
+            <div class="buttons">
+                <button onclick="changeCounter('counterG', -1)">-</button>
+                <button onclick="changeCounter('counterG', 1)">+</button>
+            </div>
+        </div>
+        <div class="item-div">
+            <h3>Atendeu</h3>
+            <div class="counter" id="counterH">0</div>
+            <div class="buttons">
+                <button onclick="changeCounter('counterH', -1)">-</button>
+                <button onclick="changeCounter('counterH', 1)">+</button>
+            </div>
+        </div>
+    </div>
 
-  
-
-  <div class="senhasexercise" data-target="10">
-    <h2>Médica
-    <span style="font-size: 100%;" id="pull-ups-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('pull-ups', -1)">-</button>
-    <button onclick="incrementCount('pull-ups', 1)">+</button>
-   </div>
-
-  <div class="senhasexercise" data-target="20">
-    <h2>Enfermeira
-    <span style="font-size: 100%;" id="jump-ropes-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('jump-ropes', -1)">-</button>
-    <button onclick="incrementCount('jump-ropes', 1)">+</button>
-  </div> 
-
-  <div class="senhasexercise" data-target="40">
-    <h2>Técnica
-    <span style="font-size: 100%;" id="push-ups-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('push-ups', -1)">-</button>
-    <button onclick="incrementCount('push-ups', 1)">+</button>
- </div>
-
-  <div class="senhasexercise" data-target="50">
-    <h2>M
-    <span style="font-size: 100%;" id="m-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('m', -1)">-</button>
-    <button onclick="incrementCount('m', 1)">+</button>
-  </div>
-  
-  <div class="senhasexercise" data-target="50">
-    <h2>T
-    <span style="font-size: 100%;" id="e-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('e', -1)">-</button>
-    <button onclick="incrementCount('e', 1)">+</button>
-  </div>
-  <!--
-  <div class="senhasexercise" data-target="50">
-    <h2>T
-    <span style="font-size: 100%;" id="t-count" class="counter">0</span></h2>
-    <button onclick="incrementCount('t', -1)">-</button>
-    <button onclick="incrementCount('t', 1)">+</button>
-  </div>
-  -->
-<script>
-    function incrementCount(senhasexercise, value) {
-      const countElementId = senhasexercise.toLowerCase().replace(/ /g, '-') + "-count";
-      const countElement = document.getElementById(countElementId);
-      
-      // Check if the element exists before trying to access its properties
-      if (!countElement) {
-        console.error("Count element not found for senhasexercise:", senhasexercise);
-        return; 
-      }
-
-      const senhasexerciseDiv = countElement.closest('.senhasexercise');
-      const target = parseInt(senhasexerciseDiv.dataset.target);
-
-      let currentCount = parseInt(countElement.textContent);
-      currentCount += value;
-      countElement.textContent = currentCount;
-      localStorage.setItem(senhasexercise.toLowerCase().replace(/ /g, '-'), currentCount.toString());
-
-      // Progress bar logic (currently commented out in HTML)
-      // const progressBarId = senhasexercise.toLowerCase().replace(/ /g, '-') + "-progress";
-      // const progressBar = document.getElementById(progressBarId);
-      // if (progressBar) {
-      //   const progressPercentage = (currentCount / target) * 100;
-      //   progressBar.style.width = Math.min(progressPercentage, 100) + '%';
-      // }
-    }
-
-    // Initialize counters and progress bars from localStorage
-    window.onload = function() {
-      const senhasexercisesData = [
-        { name: 'pull-ups', target: 10 },
-        { name: 'jump-ropes', target: 70 },
-        { name: 'push-ups', target: 20 },
-        { name: 'm', target: 50 },
-        { name: 'e', target: 50 },
-        { name: 't', target: 50 }
-      ];
-
-      senhasexercisesData.forEach(senhasexerciseData => {
-        const countElementId = senhasexerciseData.name.toLowerCase().replace(/ /g, '-') + "-count";
-        const countElement = document.getElementById(countElementId);
-        
-        if (countElement) { // Only proceed if the element exists
-          const senhasexerciseDiv = countElement.closest('.senhasexercise');
-
-          const savedCount = localStorage.getItem(senhasexerciseData.name.toLowerCase().replace(/ /g, '-'));
-          if (savedCount !== null) {
-            countElement.textContent = savedCount;
-          } else {
-            countElement.textContent = '0'; // Initialize to 0 if no saved count
-          }
-          if (senhasexerciseDiv) {
-            senhasexerciseDiv.dataset.target = senhasexerciseData.target; // Ensure target is set on load
-          }
+    <script>
+        function changeCounter(id, delta) {
+            const counterElement = document.getElementById(id);
+            let currentValue = parseInt(counterElement.innerText);
+            counterElement.innerText = currentValue + delta;
         }
-      });
-    };
-  </script>
-
+    </script>
 </body>
 </html>
