@@ -130,11 +130,30 @@
     </div>
 
     <script>
+        // Função para carregar os valores do localStorage ao carregar a página
+        function loadCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const id = counter.id;
+                const savedValue = localStorage.getItem(id); // Tenta obter o valor salvo
+                if (savedValue !== null) { // Se houver um valor salvo
+                    counter.innerText = savedValue; // Define o valor do contador
+                }
+            });
+        }
+
+        // Função para alterar e salvar o contador
         function changeCounter(id, delta) {
             const counterElement = document.getElementById(id);
             let currentValue = parseInt(counterElement.innerText);
-            counterElement.innerText = currentValue + delta;
+            const newValue = currentValue + delta;
+            counterElement.innerText = newValue;
+            localStorage.setItem(id, newValue); // Salva o novo valor no localStorage
         }
+
+        // Carrega os contadores quando a página é completamente carregada
+        window.onload = loadCounters;
     </script>
+  
 </body>
 </html>
