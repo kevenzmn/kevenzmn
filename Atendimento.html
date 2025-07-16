@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atendimento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab-button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px 8px 0 0;
+            margin: 0 2px;
+            color: #555;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-button.active {
+            background-color: #007bff;
+            color: white;
+            border-bottom: 2px solid #007bff;
+        }
+        .tab-button:hover:not(.active) {
+            background-color: #e0e0e0;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"], select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button.add-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button.add-button:hover {
+            background-color: #218838;
+        }
+        .queue-list-section {
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .queue-item {
+            background-color: #e9e9e9;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .queue-item.priority {
+            background-color: #ffe0b2; /* Light orange for priority */
+            border-left: 5px solid #ff9800; /* Orange border for priority */
+        }
+        .queue-item.attended {
+            background-color: #d4edda; /* Light green for attended */
+            border-left: 5px solid #28a745; /* Green border for attended */
+            text-decoration: line-through;
+            color: #666;
+            opacity: 0.7;
+        }
+        .queue-item span {
+            font-weight: bold;
+        }
+        .queue-item .actions button {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+            margin-left: 5px;
+        }
+        .queue-item .actions button.attended-button {
+            background-color: #007bff;
+        }
+        .queue-item .actions button:hover {
+            background-color: #c82333;
+        }
+        .queue-item .actions button.attended-button:hover {
+            background-color: #0056b3;
+        }
+        .no-patients {
+            text-align: center;
+            color: #777;
+            margin-top: 15px;
+        }
+        .attended-patients-section {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .attended-patients-section h3 {
+            color: #333;
+        }
+        .attended-item {
+            background-color: #e0ffe0; /* Very light green */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .attended-item button {
+            background-color: #6c757d; /* Gray for remove from attended */
+            color: white;
+            padding: 3px 8px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .attended-item button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestão de Filas de Atendimento</h1>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('medica')">Médica</button>
+            <button class="tab-button" onclick="openTab('vacinas')">Vacinas</button>
+            <button class="tab-button" onclick="openTab('enfermeira')">Enfermeira</button>
+            <button class="tab-button" onclick="openTab('psicologa')">Psicóloga</button>
+        </div>
+
+        <div id="medica" class="tab-content active">
+            <h2>Fila - Médica</h2>
+            <div class="form-group">
+                <label for="patient-name-medica">Nome do Paciente:</label>
+                <input type="text" id="patient-name-medica" placeholder="Digite o nome do paciente" required>
+            </div>
+            <div class="form-group">
+                <label for="ticket-type-medica">Tipo de Senha:</label>
+                <select id="ticket-type-medica">
+                    <option value="normal">Normal</option>
+                    <option value="priority">Prioridade</option>
+                </select>
+            </div>
+            <button class="add-button" onclick="addPatient('medica')">Adicionar à Fila</button>
+            <div class="queue-list-section">
+                <h3>Pacientes na Fila:</h3>
+                <div id="patients-queue-medica">
+                    <p class="no-patients">Nenhum paciente na fila ainda.</p>
+                </div>
+            </div>
+            <div class="attended-patients-section">
+                <h3>Pacientes Atendidos:</h3>
+                <div id="patients-attended-medica">
+                    <p class="no-patients">Nenhum paciente atendido ainda.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="vacinas" class="tab-content">
+            <h2>Fila - Vacinas</h2>
+            <div class="form-group">
+                <label for="patient-name-vacinas">Nome do Paciente:</label>
+                <input type="text" id="patient-name-vacinas" placeholder="Digite o nome do paciente" required>
+            </div>
+            <div class="form-group">
+                <label for="ticket-type-vacinas">Tipo de Senha:</label>
+                <select id="ticket-type-vacinas">
+                    <option value="normal">Normal</option>
+                    <option value="priority">Prioridade</option>
+                </select>
+            </div>
+            <button class="add-button" onclick="addPatient('vacinas')">Adicionar à Fila</button>
+            <div class="queue-list-section">
+                <h3>Pacientes na Fila:</h3>
+                <div id="patients-queue-vacinas">
+                    <p class="no-patients">Nenhum paciente na fila ainda.</p>
+                </div>
+            </div>
+            <div class="attended-patients-section">
+                <h3>Pacientes Atendidos:</h3>
+                <div id="patients-attended-vacinas">
+                    <p class="no-patients">Nenhum paciente atendido ainda.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="enfermeira" class="tab-content">
+            <h2>Fila - Enfermeira</h2>
+            <div class="form-group">
+                <label for="patient-name-enfermeira">Nome do Paciente:</label>
+                <input type="text" id="patient-name-enfermeira" placeholder="Digite o nome do paciente" required>
+            </div>
+            <div class="form-group">
+                <label for="ticket-type-enfermeira">Tipo de Senha:</label>
+                <select id="ticket-type-enfermeira">
+                    <option value="normal">Normal</option>
+                    <option value="priority">Prioridade</option>
+                </select>
+            </div>
+            <button class="add-button" onclick="addPatient('enfermeira')">Adicionar à Fila</button>
+            <div class="queue-list-section">
+                <h3>Pacientes na Fila:</h3>
+                <div id="patients-queue-enfermeira">
+                    <p class="no-patients">Nenhum paciente na fila ainda.</p>
+                </div>
+            </div>
+            <div class="attended-patients-section">
+                <h3>Pacientes Atendidos:</h3>
+                <div id="patients-attended-enfermeira">
+                    <p class="no-patients">Nenhum paciente atendido ainda.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="psicologa" class="tab-content">
+            <h2>Fila - Psicóloga</h2>
+            <div class="form-group">
+                <label for="patient-name-psicologa">Nome do Paciente:</label>
+                <input type="text" id="patient-name-psicologa" placeholder="Digite o nome do paciente" required>
+            </div>
+            <div class="form-group">
+                <label for="ticket-type-psicologa">Tipo de Senha:</label>
+                <select id="ticket-type-psicologa">
+                    <option value="normal">Normal</option>
+                    <option value="priority">Prioridade</option>
+                </select>
+            </div>
+            <button class="add-button" onclick="addPatient('psicologa')">Adicionar à Fila</button>
+            <div class="queue-list-section">
+                <h3>Pacientes na Fila:</h3>
+                <div id="patients-queue-psicologa">
+                    <p class="no-patients">Nenhum paciente na fila ainda.</p>
+                </div>
+            </div>
+            <div class="attended-patients-section">
+                <h3>Pacientes Atendidos:</h3>
+                <div id="patients-attended-psicologa">
+                    <p class="no-patients">Nenhum paciente atendido ainda.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Objeto para armazenar as filas e os pacientes atendidos de cada tipo de atendimento
+        let queues = {
+            medica: { normal: [], priority: [], attended: [], nextPriorityTurn: true },
+            vacinas: { normal: [], priority: [], attended: [], nextPriorityTurn: true },
+            enfermeira: { normal: [], priority: [], attended: [], nextPriorityTurn: true },
+            psicologa: { normal: [], priority: [], attended: [], nextPriorityTurn: true }
+        };
+
+        let currentTab = 'medica'; // Aba ativa por padrão
+
+        function openTab(tabName) {
+            // Esconde todas as abas
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Desativa todos os botões de aba
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+
+            // Mostra a aba selecionada
+            document.getElementById(tabName).classList.add('active');
+            // Ativa o botão da aba selecionada
+            document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add('active');
+
+            currentTab = tabName; // Atualiza a aba atual
+            renderQueue(currentTab); // Renderiza a fila da aba ativa
+            renderAttendedPatients(currentTab); // Renderiza os pacientes atendidos da aba ativa
+        }
+
+        function addPatient(queueType) {
+            const patientNameInput = document.getElementById(`patient-name-${queueType}`);
+            const ticketTypeSelect = document.getElementById(`ticket-type-${queueType}`);
+
+            const patientName = patientNameInput.value.trim();
+            const ticketType = ticketTypeSelect.value;
+
+            if (patientName === '') {
+                alert('Por favor, digite o nome do paciente.');
+                return;
+            }
+
+            const patient = {
+                name: patientName,
+                type: ticketType
+            };
+
+            if (ticketType === 'priority') {
+                queues[queueType].priority.push(patient);
+            } else {
+                queues[queueType].normal.push(patient);
+            }
+
+            patientNameInput.value = ''; // Limpa o campo de entrada
+            renderQueue(queueType);
+        }
+
+        function markPatientAttended(patientName, patientType, queueType) {
+            let found = false;
+            const currentQueue = queues[queueType];
+
+            // Remove da fila de prioridade ou normal
+            if (patientType === 'priority') {
+                for (let i = 0; i < currentQueue.priority.length; i++) {
+                    if (currentQueue.priority[i].name === patientName && currentQueue.priority[i].type === patientType) {
+                        currentQueue.attended.push(currentQueue.priority.splice(i, 1)[0]);
+                        found = true;
+                        break;
+                    }
+                }
+            } else {
+                for (let i = 0; i < currentQueue.normal.length; i++) {
+                    if (currentQueue.normal[i].name === patientName && currentQueue.normal[i].type === patientType) {
+                        currentQueue.attended.push(currentQueue.normal.splice(i, 1)[0]);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (found) {
+                renderQueue(queueType);
+                renderAttendedPatients(queueType);
+            }
+        }
+
+        function removePatientFromAttended(patientName, patientType, queueType) {
+            const currentQueue = queues[queueType];
+            for (let i = 0; i < currentQueue.attended.length; i++) {
+                if (currentQueue.attended[i].name === patientName && currentQueue.attended[i].type === patientType) {
+                    currentQueue.attended.splice(i, 1);
+                    break;
+                }
+            }
+            renderAttendedPatients(queueType);
+        }
+
+
+        function getCombinedQueue(queueType) {
+            const tempPriorityQueue = [...queues[queueType].priority];
+            const tempNormalQueue = [...queues[queueType].normal];
+            const combined = [];
+            let currentNextPriorityTurn = queues[queueType].nextPriorityTurn;
+
+            while (tempPriorityQueue.length > 0 || tempNormalQueue.length > 0) {
+                if (tempPriorityQueue.length > 0 && currentNextPriorityTurn) {
+                    combined.push(tempPriorityQueue.shift());
+                    // Alterna para normal se houver pacientes normais na fila
+                    if (tempNormalQueue.length > 0) {
+                        currentNextPriorityTurn = false;
+                    }
+                } else if (tempNormalQueue.length > 0) {
+                    combined.push(tempNormalQueue.shift());
+                    // Alterna para prioridade se houver pacientes de prioridade na fila
+                    if (tempPriorityQueue.length > 0) {
+                        currentNextPriorityTurn = true;
+                    }
+                } else if (tempPriorityQueue.length > 0) { // Se só sobrou prioridade
+                    combined.push(tempPriorityQueue.shift());
+                } else if (tempNormalQueue.length > 0) { // Se só sobrou normal
+                    combined.push(tempNormalQueue.shift());
+                }
+            }
+            // Atualiza o estado da próxima virada para a fila atual
+            queues[queueType].nextPriorityTurn = currentNextPriorityTurn;
+            return combined;
+        }
+
+        function renderQueue(queueType) {
+            const patientsQueueDiv = document.getElementById(`patients-queue-${queueType}`);
+            patientsQueueDiv.innerHTML = ''; // Limpa a lista atual
+
+            const combinedQueue = getCombinedQueue(queueType);
+
+            if (combinedQueue.length === 0) {
+                patientsQueueDiv.innerHTML = '<p class="no-patients">Nenhum paciente na fila ainda.</p>';
+                return;
+            }
+
+            combinedQueue.forEach((patient, index) => {
+                const queueItem = document.createElement('div');
+                queueItem.classList.add('queue-item');
+                if (patient.type === 'priority') {
+                    queueItem.classList.add('priority');
+                }
+
+                queueItem.innerHTML = `
+                    <span>${index + 1}. ${patient.name} (${patient.type === 'priority' ? 'Prioridade' : 'Normal'})</span>
+                    <div class="actions">
+                        <button class="attended-button" onclick="markPatientAttended('${patient.name}', '${patient.type}', '${queueType}')">Atendido</button>
+                    </div>
+                `;
+                patientsQueueDiv.appendChild(queueItem);
+            });
+        }
+
+        function renderAttendedPatients(queueType) {
+            const patientsAttendedDiv = document.getElementById(`patients-attended-${queueType}`);
+            patientsAttendedDiv.innerHTML = ''; // Limpa a lista atual
+
+            const currentAttended = queues[queueType].attended;
+
+            if (currentAttended.length === 0) {
+                patientsAttendedDiv.innerHTML = '<p class="no-patients">Nenhum paciente atendido ainda.</p>';
+                return;
+            }
+
+            currentAttended.forEach((patient, index) => {
+                const attendedItem = document.createElement('div');
+                attendedItem.classList.add('attended-item');
+                attendedItem.innerHTML = `
+                    <span>${patient.name} (${patient.type === 'priority' ? 'Prioridade' : 'Normal'})</span>
+                    <button onclick="removePatientFromAttended('${patient.name}', '${patient.type}', '${queueType}')">X</button>
+                `;
+                patientsAttendedDiv.appendChild(attendedItem);
+            });
+        }
+
+
+        // Renderiza a fila da aba inicial ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            openTab('medica'); // Abre a aba "Médica" por padrão
+        });
+    </script>
+</body>
+</html>
