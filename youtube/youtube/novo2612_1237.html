@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Imagem - Ordem Personalizada</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f0f0f0; padding: 20px; }
+        .controls { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; max-width: 900px; }
+        .input-group { display: flex; flex-direction: column; font-size: 12px; }
+        .input-group label { margin-bottom: 5px; font-weight: bold; color: #555; }
+        .input-group input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-weight: bold; }
+        canvas { border: 1px solid #ccc; max-width: 100%; height: auto; background: white; margin-top: 10px; }
+        button { grid-column: span 4; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #219150; }
+        h3 { margin-top: 0; grid-column: span 4; text-align: center; }
+        .info { grid-column: span 4; font-size: 13px; color: #666; text-align: center; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <h3>Definir Ordem das Imagens</h3>
+        <p class="info">Digite o número da imagem (1 a 8) para cada posição da grade.</p>
+        
+        <div class="input-group"><label>Slot 1:</label><input type="number" id="pos1" value="1" min="1" max="8"></div>
+        <div class="input-group"><label>Slot 2:</label><input type="number" id="pos2" value="2" min="1" max="8"></div>
+        <div class="input-group"><label>Slot 3:</label><input type="number" id="pos3" value="3" min="1" max="8"></div>
+        <div class="input-group"><label>Slot 4:</label><input type="number" id="pos4" value="4" min="1" max="8"></div>
+        <div class="input-group"><label>Slot 5:</label><input type="number" id="pos5" value="5" min="1" max="8"></div>
+        <div class="input-group"><label>Slot 6:</label><input type="number" id="pos6" value="6" min="1" max="8"></div>
+        <div class="input-group"><label>Slot 7:</label><input type="number" id="pos7" value="7" min="1" max="8"></div>
+        <div class="input-group"><label>Slot 8:</label><input type="number" id="pos8" value="8" min="1" max="8"></div>
+        
+        <button onclick="gerarEDownload()">GERAR E BAIXAR COM ESTA ORDEM</button>
+    </div>
+
+    <canvas id="meuCanvas" width="1920" height="1080"></canvas>
+
+    <script>
+        const canvas = document.getElementById('meuCanvas');
+        const ctx = canvas.getContext('2d');
+        const URL_BASE = '1000246627.jpg'; 
+        const PASTA_IMAGENS = 'imagesyt/';
+
+        function desenharBase() {
+            const baseImg = new Image();
+            baseImg.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(baseImg, 0, 0, 1920, 1080);
+            };
+            baseImg.src = URL_BASE;
+        }
+
+        window.onload = desenharBase;
+
+        function carregarImagemServidor(src) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => resolve(null);
+                img.src = src;
+            });
+        }
+
+        async function gerarEDownload() {
+            // 1. Redesenha o fundo
+            const baseImg = new Image();
+            baseImg.src = URL_BASE;
+            await new Promise(r => baseImg.onload = r);
+            ctx.drawImage(baseImg, 0, 0, 1920, 1080);
+
+            // 2. Configurações da Grade
+            const larguraQuadrado = 335;
+            const alturaQuadrado = 335;
+            const margemX = 227; 
+            const margemY = 250; 
+            const espacamento = 42; 
+
+            // Loop pelas 8 posições (slots) da tela
+            for (let i = 1; i <= 8; i++) {
+                // Pega o número da imagem que o usuário digitou para este slot
+                const numImagem = document.getElementById(`pos${i}`).value;
+                
+                // Busca a imagem correspondente na pasta
+                const caminhoImagem = `${PASTA_IMAGENS}img${numImagem}.jpg`;
+                const img = await carregarImagemServidor(caminhoImagem);
+
+                if (img) {
+                    const coluna = (i - 1) % 4;
+                    const linha = Math.floor((i - 1) / 4);
+
+                    const x = margemX + (coluna * (larguraQuadrado + espacamento));
+                    const y = margemY + (linha * (alturaQuadrado + espacamento));
+
+                    ctx.drawImage(img, x, y, larguraQuadrado, alturaQuadrado);
+                }
+            }
+
+            // 3. Download
+            const link = document.createElement('a');
+            link.download = 'resultado-personalizado.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>
