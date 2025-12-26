@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Imagem 1080p - Imagens Fixas</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f0f0f0; padding: 20px; }
+        .controls { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; max-width: 900px; }
+        canvas { border: 1px solid #ccc; max-width: 100%; height: auto; background: white; margin-top: 10px; }
+        button { padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #219150; }
+        h3 { margin-top: 0; color: #333; }
+        p { font-size: 14px; color: #666; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <h3>Gerador Automático</h3>
+        <p>As 8 imagens da pasta <b>imagesyt/</b> serão processadas na grade.</p>
+        <button onclick="gerarEDownload()">GERAR E BAIXAR IMAGEM 1080p</button>
+    </div>
+
+    <canvas id="meuCanvas" width="1920" height="1080"></canvas>
+
+    <script>
+        const canvas = document.getElementById('meuCanvas');
+        const ctx = canvas.getContext('2d');
+        const URL_BASE = '1000246627.jpg'; // Sua imagem de fundo
+        const PASTA_IMAGENS = 'imagesyt/'; // Pasta onde as imagens estão
+
+        // Função para desenhar o fundo ao carregar a página
+        function desenharBase() {
+            const baseImg = new Image();
+            baseImg.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(baseImg, 0, 0, 1920, 1080);
+            };
+            baseImg.src = URL_BASE;
+        }
+
+        window.onload = desenharBase;
+
+        // Função para carregar imagem via URL (caminho da pasta)
+        function carregarImagemServidor(src) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => {
+                    console.error("Erro ao carregar imagem: " + src);
+                    resolve(null);
+                };
+                img.src = src;
+            });
+        }
+
+        async function gerarEDownload() {
+            // 1. Redesenha o fundo
+            const baseImg = new Image();
+            baseImg.src = URL_BASE;
+            await new Promise(r => baseImg.onload = r);
+            ctx.drawImage(baseImg, 0, 0, 1920, 1080);
+
+            // 2. Configurações da Grade
+            const larguraQuadrado = 335;
+            const alturaQuadrado = 335;
+            const margemX = 227; 
+            const margemY = 250; 
+            const espacamento = 42; 
+
+            // Loop para processar as 8 imagens fixas
+            for (let i = 1; i <= 8; i++) {
+                // Monta o caminho da imagem: imagesyt/img1.jpg, imagesyt/img2.jpg...
+                const caminhoImagem = `${PASTA_IMAGENS}img${i}.jpg`;
+                const img = await carregarImagemServidor(caminhoImagem);
+
+                if (img) {
+                    const coluna = (i - 1) % 4; // 0, 1, 2, 3
+                    const linha = Math.floor((i - 1) / 4); // 0 ou 1
+
+                    const x = margemX + (coluna * (larguraQuadrado + espacamento));
+                    const y = margemY + (linha * (alturaQuadrado + espacamento));
+
+                    ctx.drawImage(img, x, y, larguraQuadrado, alturaQuadrado);
+                }
+            }
+
+            // 3. Download
+            const link = document.createElement('a');
+            link.download = 'resultado-1080p.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>
