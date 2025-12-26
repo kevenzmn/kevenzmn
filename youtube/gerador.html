@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Imagem 1080p</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f0f0f0; padding: 20px; }
+        .controls { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .input-group { display: flex; flex-direction: column; margin-bottom: 10px; }
+        canvas { border: 1px solid #ccc; max-width: 100%; height: auto; background: white; }
+        button { grid-column: span 2; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #219150; }
+        h3 { margin-top: 0; grid-column: span 2; }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <h3>Upload das Imagens (Posições 2, 6 e 7)</h3>
+        <div class="input-group">
+            <label>Imagem para posição 2:</label>
+            <input type="file" id="img2" accept="image/*">
+        </div>
+        <div class="input-group">
+            <label>Imagem para posição 6:</label>
+            <input type="file" id="img6" accept="image/*">
+        </div>
+        <div class="input-group">
+            <label>Imagem para posição 7:</label>
+            <input type="file" id="img7" accept="image/*">
+        </div>
+        <button onclick="gerarEDownload()">GERAR E BAIXAR IMAGEM 1080p</button>
+    </div>
+
+    <canvas id="meuCanvas" width="1920" height="1080"></canvas>
+
+    <script>
+        const canvas = document.getElementById('meuCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Caminho da sua imagem base (nariz/boca)
+        const URL_BASE = '1000246627.jpg'; 
+
+        function desenharBase() {
+            const baseImg = new Image();
+            baseImg.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // Desenha a imagem base preenchendo o 1080p
+                ctx.drawImage(baseImg, 0, 0, 1920, 1080);
+            };
+            baseImg.src = URL_BASE;
+        }
+
+        // Carrega a base assim que abrir a página
+        window.onload = desenharBase;
+
+        async function carregarImagem(inputEl) {
+            return new Promise((resolve) => {
+                if (inputEl.files && inputEl.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => resolve(img);
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(inputEl.files[0]);
+                } else {
+                    resolve(null);
+                }
+            });
+        }
+
+        async function gerarEDownload() {
+            // 1. Redesenha a base para garantir que está limpo
+            const baseImg = new Image();
+            baseImg.src = URL_BASE;
+            await new Promise(r => baseImg.onload = r);
+            ctx.drawImage(baseImg, 0, 0, 1920, 1080);
+
+            // 2. Carrega as imagens dos inputs
+            const i2 = await carregarImagem(document.getElementById('img2'));
+            const i6 = await carregarImagem(document.getElementById('img6'));
+            const i7 = await carregarImagem(document.getElementById('img7'));
+
+            // 3. Coordenadas aproximadas baseadas no seu exemplo (Ajuste conforme necessário)
+            // drawImage(imagem, x, y, largura, altura)
+            
+            // Posição 2 (Top-Leftish)
+            if (i2) ctx.drawImage(i2, 500, 220, 400, 400); 
+            
+            // Posição 6 (Top-Rightish)
+            if (i6) ctx.drawImage(i6, 1400, 220, 400, 400);
+
+            // Posição 7 (Bottom)
+            if (i7) ctx.drawImage(i7, 960, 600, 400, 400);
+
+            // 4. Download automático
+            const link = document.createElement('a');
+            link.download = 'montagem-final-1080p.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>
