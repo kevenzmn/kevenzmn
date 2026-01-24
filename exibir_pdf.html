@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplos de Exibição de PDF</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .pdf-frame {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .label {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Alternativas para exibir PDF</h1>
+
+    <div class="container">
+        <span class="label">Tag &lt;embed&gt;</span>
+        <h2>Opção 1: Embed</h2>
+        <p>Geralmente usada para conteúdo externo interativo.</p>
+        <embed src="images/pdf1.pdf" type="application/pdf" class="pdf-frame" />
+    </div>
+
+    <div class="container">
+        <span class="label">Tag &lt;iframe&gt;</span>
+        <h2>Opção 2: Iframe</h2>
+        <p>Insere o PDF como se fosse uma outra página de navegação.</p>
+        <iframe src="images/pdf1.pdf" class="pdf-frame"></iframe>
+    </div>
+
+    <div class="container">
+        <span class="label">Tag &lt;object&gt;</span>
+        <h2>Opção 3: Object</h2>
+        <p>Considerada a mais robusta pois permite um "texto de fallback" caso o navegador não suporte PDF.</p>
+        <object data="images/pdf1.pdf" type="application/pdf" class="pdf-frame">
+            <p>Seu navegador não tem um plugin para PDF. 
+               <a href="images/pdf1.pdf">Clique aqui para baixar o arquivo.</a>
+            </p>
+        </object>
+    </div>
+
+    <div class="container">
+        <span class="label">Link Direto</span>
+        <h2>Opção 4: Botão/Link de Acesso</h2>
+        <p>Em dispositivos móveis, as opções acima podem falhar. O link é sempre a forma mais garantida.</p>
+        <a href="images/pdf1.pdf" target="_blank" style="display: inline-block; padding: 10px 20px; background: #27ae60; color: white; text-decoration: none; border-radius: 5px;">
+            Abrir PDF em nova aba
+        </a>
+    </div>
+
+</body>
+</html>
