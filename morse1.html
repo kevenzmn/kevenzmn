@@ -96,11 +96,11 @@
             font-size: 1.1rem;
         }
 
-        /* Campo invisível para forçar teclado no celular */
         #mobile-input {
             position: absolute;
             opacity: 0;
             pointer-events: none;
+            top: 0;
         }
 
         .status { font-size: 0.8rem; opacity: 0.7; margin-bottom: 10px; }
@@ -153,34 +153,36 @@
         let pool = [];
         let currentItem = "";
         let userInput = "";
+        let isProcessing = false; // Trava para evitar pulo de questões
 
-        // Foca no input invisível para abrir teclado no celular
         function focusMobileInput() {
             if(currentMode === 2) document.getElementById('mobile-input').focus();
         }
 
-        // Listener para capturar o teclado
+        // Listener unificado para evitar duplicação
         document.addEventListener('keydown', (e) => {
-            if (currentMode === 2) {
-                const tecla = e.key.toUpperCase();
-                if (morseDict[tecla]) {
-                    document.getElementById('typed-char').innerText = tecla;
-                    checkMode2(tecla);
+            if (currentMode === 2 && !isProcessing) {
+                // Se for teclado físico de PC, processa aqui
+                if (e.key.length === 1) { 
+                    handleKeyInput(e.key.toUpperCase());
                 }
             }
         });
 
-        // Listener para mobile (input invisível)
         document.getElementById('mobile-input').addEventListener('input', (e) => {
-            if (currentMode === 2) {
-                const tecla = e.target.value.toUpperCase().slice(-1);
-                if (morseDict[tecla]) {
-                    document.getElementById('typed-char').innerText = tecla;
-                    checkMode2(tecla);
-                }
-                e.target.value = ""; // Limpa para a próxima
+            if (currentMode === 2 && !isProcessing) {
+                const char = e.target.value.toUpperCase().slice(-1);
+                handleKeyInput(char);
+                e.target.value = ""; 
             }
         });
+
+        function handleKeyInput(char) {
+            if (morseDict[char]) {
+                document.getElementById('typed-char').innerText = char;
+                checkMode2(char);
+            }
+        }
 
         function switchMode(m) {
             currentMode = m;
@@ -197,10 +199,10 @@
         }
 
         function nextQuestion() {
+            isProcessing = false; // Libera para a próxima
             if (pool.length === 0) {
                 document.getElementById('display-main').innerText = "FIM!";
-                alert("Sessão concluída! Reiniciando...");
-                resetSession();
+                setTimeout(() => { resetSession(); }, 1500);
                 return;
             }
             currentItem = pool.pop();
@@ -225,14 +227,17 @@
         }
 
         function checkMode1() {
+            if(isProcessing) return;
             giveFeedback(userInput === morseDict[currentItem]);
         }
 
         function checkMode2(letraEscolhida) {
+            if(isProcessing) return;
             giveFeedback(letraEscolhida === currentItem);
         }
 
         function giveFeedback(isCorrect) {
+            isProcessing = true; // Bloqueia novas entradas durante o feedback
             const body = document.body;
             const msg = document.getElementById('feedback');
             
@@ -250,6 +255,7 @@
                 setTimeout(() => {
                     body.classList.remove('wrong');
                     msg.innerText = "";
+                    isProcessing = false; // Libera para tentar de novo a mesma
                     if(currentMode === 1) clearInput();
                 }, 600);
             }
