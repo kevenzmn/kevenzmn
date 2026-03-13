@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treino de Código Morse</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --light: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #morse-display {
+            font-size: 5rem;
+            margin: 20px 0;
+            letter-spacing: 10px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #feedback {
+            height: 30px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .input-display {
+            font-size: 2rem;
+            min-height: 2.5rem;
+            margin-bottom: 20px;
+            color: #f1c40f;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background: var(--light);
+            color: var(--primary);
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #btn-check {
+            background-color: #3498db;
+            color: white;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .progress {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Animações de Feedback */
+        .correct { background-color: var(--success) !important; }
+        .wrong { background-color: var(--error) !important; }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container" id="game-box">
+        <div id="feedback"></div>
+        <div class="progress">Letras restantes: <span id="count">26</span></div>
+        
+        <div id="morse-display">?</div>
+        
+        <div class="input-display" id="user-input-view"></div>
+
+        <div class="controls">
+            <button onclick="addInput('.')">●</button>
+            <button onclick="addInput('-')">━</button>
+        </div>
+        
+        <button id="btn-check" onclick="checkAnswer()">Confirmar</button>
+        <button style="margin-top: 10px; background: #95a5a6; font-size: 0.8rem;" onclick="resetInput()">Apagar</button>
+    </div>
+
+    <script>
+        const morseAlphabet = {
+            'A': '.-',    'B': '-...',  'C': '-.-.',  'D': '-..',
+            'E': '.',     'F': '..-.',  'G': '--.',   'H': '....',
+            'I': '..',    'J': '.---',  'K': '-.-',   'L': '.-..',
+            'M': '--',    'N': '-.',    'O': '---',   'P': '.--.',
+            'Q': '--.-',  'R': '.-.',   'S': '...',   'T': '-',
+            'U': '..-',   'V': '...-',  'W': '.--',   'X': '-..-',
+            'Y': '-.--',  'Z': '--..'
+        };
+
+        let lettersPool = Object.keys(morseAlphabet).sort(() => Math.random() - 0.5);
+        let currentLetter = '';
+        let userInput = '';
+
+        function nextRound() {
+            if (lettersPool.length === 0) {
+                document.getElementById('game-box').innerHTML = "<h2>Treino Concluído!</h2><button onclick='location.reload()'>Reiniciar Sessão</button>";
+                return;
+            }
+            
+            currentLetter = lettersPool.pop();
+            document.getElementById('morse-display').innerText = currentLetter;
+            document.getElementById('count').innerText = lettersPool.length + 1;
+            resetInput();
+        }
+
+        function addInput(char) {
+            userInput += char;
+            document.getElementById('user-input-view').innerText = userInput;
+        }
+
+        function resetInput() {
+            userInput = '';
+            document.getElementById('user-input-view').innerText = '';
+        }
+
+        function checkAnswer() {
+            const correctAnswer = morseAlphabet[currentLetter];
+            const body = document.body;
+            const feedback = document.getElementById('feedback');
+
+            if (userInput === correctAnswer) {
+                // Acertou
+                body.classList.add('correct');
+                feedback.innerText = "CORRETO!";
+                setTimeout(() => {
+                    body.classList.remove('correct');
+                    feedback.innerText = "";
+                    nextRound();
+                }, 600);
+            } else {
+                // Errou
+                body.classList.add('wrong');
+                feedback.innerText = "TENTE NOVAMENTE";
+                setTimeout(() => {
+                    body.classList.remove('wrong');
+                    feedback.innerText = "";
+                    resetInput();
+                }, 600);
+            }
+        }
+
+        // Iniciar o jogo
+        nextRound();
+    </script>
+</body>
+</html>
