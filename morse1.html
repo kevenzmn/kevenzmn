@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treino Morse Pro</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --accent: #3498db;
+            --light: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--primary);
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        /* Sistema de Abas */
+        .tabs {
+            display: flex;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 0 0 15px 15px;
+        }
+
+        #display-main {
+            font-size: 4rem;
+            margin: 20px 0;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 5px;
+        }
+
+        .input-area {
+            min-height: 60px;
+            margin-bottom: 20px;
+        }
+
+        /* Teclado de Letras (Modo 2) */
+        .letter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .letter-btn {
+            padding: 10px;
+            background: var(--light);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .morse-controls button {
+            padding: 15px 35px;
+            font-size: 1.5rem;
+            margin: 0 5px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-confirm {
+            background: var(--accent);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .status { font-size: 0.8rem; opacity: 0.7; margin-bottom: 10px; }
+        .hidden { display: none; }
+        .correct { background-color: var(--success) !important; }
+        .wrong { background-color: var(--error) !important; }
+    </style>
+</head>
+<body>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchMode(1)">Letra → Morse</div>
+        <div class="tab" onclick="switchMode(2)">Morse → Letra</div>
+    </div>
+
+    <div class="container">
+        <div id="feedback" style="height: 20px; font-weight: bold; margin-bottom: 10px;"></div>
+        <div class="status">Progresso: <span id="count">0</span>/26</div>
+        
+        <div id="display-main">?</div>
+
+        <div id="ui-mode-1">
+            <div class="input-area" id="user-input-morse" style="font-size: 2rem; color: #f1c40f;"></div>
+            <div class="morse-controls">
+                <button onclick="addMorse('.')">●</button>
+                <button onclick="addMorse('-')">━</button>
+            </div>
+            <button class="btn-confirm" onclick="checkMode1()">Confirmar Resposta</button>
+            <button style="background:none; color:white; border:none; cursor:pointer; margin-top:10px;" onclick="clearInput()">[ Limpar ]</button>
+        </div>
+
+        <div id="ui-mode-2" class="hidden">
+            <div class="input-area" style="font-size: 1.2rem;">Qual é esta letra?</div>
+            <div class="letter-grid" id="alphabet-buttons"></div>
+        </div>
+    </div>
+
+    <script>
+        const morseDict = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 
+            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+            'Y': '-.--', 'Z': '--..'
+        };
+
+        let currentMode = 1;
+        let pool = [];
+        let currentItem = "";
+        let userInput = "";
+
+        // Inicializar botões de letras para o Modo 2
+        const grid = document.getElementById('alphabet-buttons');
+        Object.keys(morseDict).forEach(letra => {
+            let btn = document.createElement('button');
+            btn.className = 'letter-btn';
+            btn.innerText = letra;
+            btn.onclick = () => checkMode2(letra);
+            grid.appendChild(btn);
+        });
+
+        function switchMode(m) {
+            currentMode = m;
+            document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i+1 === m));
+            document.getElementById('ui-mode-1').classList.toggle('hidden', m !== 1);
+            document.getElementById('ui-mode-2').classList.toggle('hidden', m !== 2);
+            resetSession();
+        }
+
+        function resetSession() {
+            pool = Object.keys(morseDict).sort(() => Math.random() - 0.5);
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (pool.length === 0) {
+                document.getElementById('display-main').innerText = "FIM!";
+                alert("Sessão concluída! Reiniciando...");
+                resetSession();
+                return;
+            }
+            currentItem = pool.pop();
+            document.getElementById('count').innerText = 26 - pool.length;
+            
+            if (currentMode === 1) {
+                document.getElementById('display-main').innerText = currentItem;
+            } else {
+                document.getElementById('display-main').innerText = morseDict[currentItem];
+            }
+            clearInput();
+        }
+
+        // Funções Modo 1
+        function addMorse(c) { 
+            userInput += c; 
+            document.getElementById('user-input-morse').innerText = userInput; 
+        }
+        function clearInput() { 
+            userInput = ""; 
+            document.getElementById('user-input-morse').innerText = ""; 
+        }
+
+        function checkMode1() {
+            giveFeedback(userInput === morseDict[currentItem]);
+        }
+
+        // Funções Modo 2
+        function checkMode2(letraEscolhida) {
+            giveFeedback(letraEscolhida === currentItem);
+        }
+
+        function giveFeedback(isCorrect) {
+            const body = document.body;
+            const msg = document.getElementById('feedback');
+            
+            if (isCorrect) {
+                body.classList.add('correct');
+                msg.innerText = "MUITO BEM!";
+                setTimeout(() => {
+                    body.classList.remove('correct');
+                    msg.innerText = "";
+                    nextQuestion();
+                }, 600);
+            } else {
+                body.classList.add('wrong');
+                msg.innerText = "ERROU!";
+                setTimeout(() => {
+                    body.classList.remove('wrong');
+                    msg.innerText = "";
+                    if(currentMode === 1) clearInput();
+                }, 600);
+            }
+        }
+
+        // Start
+        resetSession();
+    </script>
+</body>
+</html>
