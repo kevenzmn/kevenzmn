@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio de Cores - 5x5</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            font-family: sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            grid-template-rows: repeat(5, 60px);
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .square {
+            width: 60px;
+            height: 60px;
+            background-color: #ddd;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .active {
+            background-color: #4CAF50; /* Cor nova */
+            transform: scale(1.05);
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid" id="grid">
+        </div>
+
+    <button id="btnColorir">Mudar Cor Aleatória</button>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const btn = document.getElementById('btnColorir');
+        const totalSquares = 25;
+        let availableIndexes = [];
+
+        // Inicializa a grade e o array de índices disponíveis
+        function initGrid() {
+            grid.innerHTML = '';
+            availableIndexes = [];
+            for (let i = 0; i < totalSquares; i++) {
+                const div = document.createElement('div');
+                div.classList.add('square');
+                div.id = `sq-${i}`;
+                grid.appendChild(div);
+                availableIndexes.push(i);
+            }
+        }
+
+        btn.addEventListener('click', () => {
+            if (availableIndexes.length > 0) {
+                // Escolhe um índice aleatório dentro dos disponíveis
+                const randomIndexInArray = Math.floor(Math.random() * availableIndexes.length);
+                const squareIndex = availableIndexes[randomIndexInArray];
+
+                // Remove o índice para não repetir
+                availableIndexes.splice(randomIndexInArray, 1);
+
+                // Altera a cor do quadrado sorteado
+                const selectedSquare = document.getElementById(`sq-${squareIndex}`);
+                selectedSquare.classList.add('active');
+
+                // Desativa o botão se completar a grade
+                if (availableIndexes.length === 0) {
+                    btn.innerText = "Grade Completa!";
+                    btn.disabled = true;
+                }
+            }
+        });
+
+        initGrid();
+    </script>
+</body>
+</html>
