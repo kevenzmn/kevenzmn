@@ -1,23 +1,85 @@
-<!doctype html>
-<html lang="pt-BR">
- <head>
-   <title>kevenzmn</title>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content="This is a simple webpage with a heading.">
-   <!--<meta name="keywords" content="HTML, webpage, heading">-->
-   <link rel="shortcut icon" href="https://lh3.googleusercontent.com/a/ACg8ocI__Xp7t-3AONpJLg9XnplDLXzVpmqvY7mSFGFvXmOSDhMmCg=s360-c-no" type="image/png">
-   <link rel="stylesheet" href="style.css">                
- </head>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Documentos</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
 
-    <body>
-      <h2>LAUDO MÉDICO</h2>
-      <p>Atesto para os devidos fins que DAVID KEVEN NOBRE DE MENEZES, 23 anos, é acompanhado no serviço de Endocrinologia do Hospital Universitário Walter Cantídio devido ao diagnóstico de OSTEOGÊNESE IMPERFEITA (CID Q78.0). Faz uso regular de alendronato de sódio 70 mg/semana e Carbonato de cálcio 600 mg + vitamina D 400 UI 02 cps ao dia. Já fez uso de pamidronato de 2003 a 2017. O quadro clínico consiste em fragilidade óssea e alto risco de fraturas, podendo ocorrer fraturas ameaçadoras à vida, como em vértebra ou em fêmur. Portanto está contra-indicado qualquer atividade laboral que o coloque em risco de traumatismo.</p>
-    <footer>
-    <a href="link.html" style="color: black;">LINK</a>
-    <a href="" style="color: white;">jjj</a>
-    <a href="email.html" style="color: black;">EMAIL</a>
-    </footer>
-    </body>
+        .container {
+            width: 80%;
+            max-width: 900px;
+            text-align: center;
+        }
 
+        .button-group {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-docx {
+            background-color: #2b579a; /* Cor padrão do Word */
+        }
+
+        .btn-docx:hover {
+            background-color: #1e3e6d;
+        }
+
+        .viewer-container {
+            width: 100%;
+            height: 80vh;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            background: #fff;
+        }
+
+        embed {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="button-group">
+            <a href="/images/laudo_maio.pdf" download class="btn">
+                Baixar PDF
+            </a>
+            <a href="/images/laudo_maio.docx" download class="btn btn-docx">
+                Baixar DOCX
+            </a>
+        </div>
+
+        <div class="viewer-container">
+            <embed src="/images/laudo_maio.pdf" type="application/pdf">
+        </div>
+    </div>
+
+</body>
 </html>
