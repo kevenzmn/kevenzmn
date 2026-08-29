@@ -5,7 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calisthenics Progression Tracker</title>
   <style>
-    /* CSS: Styling and Layout */
+    /* 
+      ==========================================================================
+      CSS STYLESHEET EXPLANATION
+      ==========================================================================
+      - General page styling sets a clean font, light background, and central column.
+      - .week-nav & .week-btn handle the interactive navigation bar for Week 1-5.
+      - .status-badge displays the current week's goal, dates, and phase notes.
+      - .days-schedule breaks down the exact 3 training days per week.
+      - .exercise-card styles each specific movement card.
+      ==========================================================================
+    */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f8;
@@ -54,10 +64,21 @@
       text-align: center;
       background-color: #e8f4fd;
       color: #2980b9;
-      padding: 8px;
+      padding: 10px;
       border-radius: 6px;
       font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .days-schedule {
+      display: flex;
+      justify-content: space-around;
+      background-color: #f1f5f9;
+      padding: 10px;
+      border-radius: 6px;
       margin-bottom: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
     }
     .exercise-card {
       border: 1px solid #e2e8f0;
@@ -102,10 +123,26 @@
 </head>
 <body>
 
+  <!--
+    ==========================================================================
+    INVISIBLE PROGRAM REFERENCE & GUIDELINES
+    ==========================================================================
+    1. FREQUENCY: Train exactly 3 days per week (e.g., Sat/Mon/Wed or Mon/Wed/Fri).
+       Rest days are essential for muscle repair, tendon health, and immune recovery.
+    2. PROGRESSION LOGIC:
+       - Week 1: Re-entry baseline after illness (3 sets x 2 reps).
+       - Weeks 2-4: Gradual rep additions week-over-week (double progression).
+       - Week 5: Deload Week (drop to 2 sets) to dump accumulated fatigue.
+    3. NEXT CYCLE: After Week 5, start Cycle 2 at Week 3 rep targets (3 sets x 4-6 reps)
+       and build up toward 8-10 reps.
+    4. IN-SET RULE: Never train to absolute failure. Leave 1-2 reps "in the tank".
+    ==========================================================================
+  -->
+
   <div class="container">
     <h1>Calisthenics Plan</h1>
     
-    <!-- Navigation Buttons for Weeks -->
+    <!-- Week Navigation Buttons -->
     <div class="week-nav">
       <button class="week-btn active" onclick="setWeek(1)">Week 1</button>
       <button class="week-btn" onclick="setWeek(2)">Week 2</button>
@@ -114,8 +151,16 @@
       <button class="week-btn" onclick="setWeek(5)">Week 5 (Deload)</button>
     </div>
 
+    <!-- Title & Date Range Display -->
     <div class="status-badge" id="week-title">
-      Week 1 (Re-Entry) - Focus on full range of motion
+      Week 1 (29/08 - 04/09) - Focus on control and smooth movement
+    </div>
+
+    <!-- Active Workout Days for the Selected Week -->
+    <div class="days-schedule" id="workout-days">
+      <span>Day 1: 29/08</span>
+      <span>Day 2: 31/08</span>
+      <span>Day 3: 02/09</span>
     </div>
     
     <!-- Exercise Cards -->
@@ -157,30 +202,50 @@
   </div>
 
   <script>
-    // Progression data structured directly from your workout plan
+    /* 
+      ==========================================================================
+      JAVASCRIPT DATA & LOGIC EXPLANATION
+      ==========================================================================
+      - `workoutPlan`: Object storing exact targets, dates, and notes per week.
+      - Day Schedule starts on 29/08 and moves forward on a 3-days-per-week pattern.
+      - Week 5 drops set targets from 3 to 2 for systemic deload recovery.
+      - `setWeek(num)` updates text elements and resets live counters dynamically.
+      ==========================================================================
+    */
     const workoutPlan = {
       1: {
-        title: "Week 1 (Re-Entry) - Focus on control and smooth movement",
+        dateRange: "29/08 - 04/09",
+        days: ["Day 1: 29/08 (Sat)", "Day 2: 31/08 (Mon)", "Day 3: 02/09 (Wed)"],
+        title: "Week 1 - Focus on control and smooth movement",
         targets: { biceps: { sets: 3, reps: 2 }, pushups: { sets: 3, reps: 2 }, back: { sets: 3, reps: 2 }, squats: { sets: 3, reps: 2 } }
       },
       2: {
-        title: "Week 2 (Building) - Moderate volume increase",
+        dateRange: "05/09 - 11/09",
+        days: ["Day 1: 05/09 (Sat)", "Day 2: 07/09 (Mon)", "Day 3: 09/09 (Wed)"],
+        title: "Week 2 - Moderate volume increase",
         targets: { biceps: { sets: 3, reps: 3 }, pushups: { sets: 3, reps: 4 }, back: { sets: 3, reps: 3 }, squats: { sets: 3, reps: 3 } }
       },
       3: {
-        title: "Week 3 (Consolidation) - Monitor joints and form",
+        dateRange: "12/09 - 18/09",
+        days: ["Day 1: 12/09 (Sat)", "Day 2: 14/09 (Mon)", "Day 3: 16/09 (Wed)"],
+        title: "Week 3 - Monitor joints and form",
         targets: { biceps: { sets: 3, reps: 4 }, pushups: { sets: 3, reps: 6 }, back: { sets: 3, reps: 4 }, squats: { sets: 3, reps: 4 } }
       },
       4: {
-        title: "Week 4 (Peak Volume) - Push quality, leave 1 rep in tank",
+        dateRange: "19/09 - 25/09",
+        days: ["Day 1: 19/09 (Sat)", "Day 2: 21/09 (Mon)", "Day 3: 23/09 (Wed)"],
+        title: "Week 4 - Push quality, leave 1 rep in tank",
         targets: { biceps: { sets: 3, reps: 5 }, pushups: { sets: 3, reps: 8 }, back: { sets: 3, reps: 5 }, squats: { sets: 3, reps: 5 } }
       },
       5: {
+        dateRange: "26/09 - 02/10",
+        days: ["Day 1: 26/09 (Sat)", "Day 2: 28/09 (Mon)", "Day 3: 30/09 (Wed)"],
         title: "Week 5 (Deload) - Reduced volume to allow system recovery",
         targets: { biceps: { sets: 2, reps: 3 }, pushups: { sets: 2, reps: 5 }, back: { sets: 2, reps: 3 }, squats: { sets: 2, reps: 3 } }
       }
     };
 
+    // Rep Counters
     const counts = { biceps: 0, pushups: 0, back: 0, squats: 0 };
 
     function addRep(exercise) {
@@ -189,7 +254,7 @@
     }
 
     function setWeek(weekNumber) {
-      // Update Active Button styling
+      // Highlight active navigation button
       const buttons = document.querySelectorAll('.week-btn');
       buttons.forEach((btn, idx) => {
         if (idx === weekNumber - 1) {
@@ -199,9 +264,18 @@
         }
       });
 
-      // Update Week Title Banner
       const weekData = workoutPlan[weekNumber];
-      document.getElementById('week-title').innerText = weekData.title;
+
+      // Update Header with Date Range
+      document.getElementById('week-title').innerText = `${weekData.title} (${weekData.dateRange})`;
+
+      // Update Day Schedule Display
+      const daysContainer = document.getElementById('workout-days');
+      daysContainer.innerHTML = `
+        <span>${weekData.days[0]}</span>
+        <span>${weekData.days[1]}</span>
+        <span>${weekData.days[2]}</span>
+      `;
 
       // Update Target Sets and Reps dynamically
       for (const exercise in weekData.targets) {
