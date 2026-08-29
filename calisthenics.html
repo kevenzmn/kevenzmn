@@ -3,110 +3,217 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calisthenics Tracker</title>
+  <title>Calisthenics Progression Tracker</title>
   <style>
     /* CSS: Styling and Layout */
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f8;
       color: #333;
       margin: 0;
       padding: 20px;
     }
     .container {
-      max-width: 600px;
+      max-width: 650px;
       margin: 0 auto;
       background: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
     h1 {
       text-align: center;
       color: #2c3e50;
+      margin-bottom: 5px;
+    }
+    .week-nav {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .week-btn {
+      background-color: #e0e6ed;
+      color: #333;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+    .week-btn:hover {
+      background-color: #cbd5e1;
+    }
+    .week-btn.active {
+      background-color: #3498db;
+      color: white;
+    }
+    .status-badge {
+      text-align: center;
+      background-color: #e8f4fd;
+      color: #2980b9;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-bottom: 20px;
     }
     .exercise-card {
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      padding: 15px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
       margin-bottom: 15px;
-      background-color: #fafafa;
+      background-color: #f8fafc;
     }
     .exercise-card h3 {
       margin-top: 0;
-      color: #34495e;
+      margin-bottom: 8px;
+      color: #1e293b;
+    }
+    .exercise-card p {
+      margin: 4px 0 12px 0;
+      color: #64748b;
     }
     .controls {
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
     }
-    button {
-      background-color: #3498db;
+    .btn-action {
+      background-color: #22c55e;
       color: white;
       border: none;
       padding: 8px 16px;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: 600;
     }
-    button:hover {
-      background-color: #2980b9;
+    .btn-action:hover {
+      background-color: #16a34a;
     }
     .rep-count {
       font-weight: bold;
-      font-size: 18px;
+      font-size: 16px;
+      color: #0f172a;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>5-Week Progression Tracker</h1>
+    <h1>Calisthenics Plan</h1>
     
+    <!-- Navigation Buttons for Weeks -->
+    <div class="week-nav">
+      <button class="week-btn active" onclick="setWeek(1)">Week 1</button>
+      <button class="week-btn" onclick="setWeek(2)">Week 2</button>
+      <button class="week-btn" onclick="setWeek(3)">Week 3</button>
+      <button class="week-btn" onclick="setWeek(4)">Week 4</button>
+      <button class="week-btn" onclick="setWeek(5)">Week 5 (Deload)</button>
+    </div>
+
+    <div class="status-badge" id="week-title">
+      Week 1 (Re-Entry) - Focus on full range of motion
+    </div>
+    
+    <!-- Exercise Cards -->
     <div class="exercise-card">
       <h3>Biceps Pull-ups</h3>
-      <p>Target: 3 Sets × <span id="target-biceps">2</span> Reps</p>
+      <p>Target: <span id="sets-biceps">3</span> Sets × <span id="target-biceps">2</span> Reps</p>
       <div class="controls">
-        <button onclick="addRep('biceps')">+1 Rep Completed</button>
+        <button class="btn-action" onclick="addRep('biceps')">+1 Rep Completed</button>
         <span class="rep-count">Done: <span id="done-biceps">0</span></span>
       </div>
     </div>
 
     <div class="exercise-card">
       <h3>Push-ups</h3>
-      <p>Target: 3 Sets × <span id="target-pushups">2</span> Reps</p>
+      <p>Target: <span id="sets-pushups">3</span> Sets × <span id="target-pushups">2</span> Reps</p>
       <div class="controls">
-        <button onclick="addRep('pushups')">+1 Rep Completed</button>
+        <button class="btn-action" onclick="addRep('pushups')">+1 Rep Completed</button>
         <span class="rep-count">Done: <span id="done-pushups">0</span></span>
       </div>
     </div>
 
     <div class="exercise-card">
       <h3>Back Pull-ups</h3>
-      <p>Target: 3 Sets × <span id="target-back">2</span> Reps</p>
+      <p>Target: <span id="sets-back">3</span> Sets × <span id="target-back">2</span> Reps</p>
       <div class="controls">
-        <button onclick="addRep('back')">+1 Rep Completed</button>
+        <button class="btn-action" onclick="addRep('back')">+1 Rep Completed</button>
         <span class="rep-count">Done: <span id="done-back">0</span></span>
       </div>
     </div>
 
     <div class="exercise-card">
       <h3>Dragon Squats</h3>
-      <p>Target: 3 Sets × <span id="target-squats">2</span> Reps / leg</p>
+      <p>Target: <span id="sets-squats">3</span> Sets × <span id="target-squats">2</span> Reps / leg</p>
       <div class="controls">
-        <button onclick="addRep('squats')">+1 Rep Completed</button>
+        <button class="btn-action" onclick="addRep('squats')">+1 Rep Completed</button>
         <span class="rep-count">Done: <span id="done-squats">0</span></span>
       </div>
     </div>
   </div>
 
   <script>
+    // Progression data structured directly from your workout plan
+    const workoutPlan = {
+      1: {
+        title: "Week 1 (Re-Entry) - Focus on control and smooth movement",
+        targets: { biceps: { sets: 3, reps: 2 }, pushups: { sets: 3, reps: 2 }, back: { sets: 3, reps: 2 }, squats: { sets: 3, reps: 2 } }
+      },
+      2: {
+        title: "Week 2 (Building) - Moderate volume increase",
+        targets: { biceps: { sets: 3, reps: 3 }, pushups: { sets: 3, reps: 4 }, back: { sets: 3, reps: 3 }, squats: { sets: 3, reps: 3 } }
+      },
+      3: {
+        title: "Week 3 (Consolidation) - Monitor joints and form",
+        targets: { biceps: { sets: 3, reps: 4 }, pushups: { sets: 3, reps: 6 }, back: { sets: 3, reps: 4 }, squats: { sets: 3, reps: 4 } }
+      },
+      4: {
+        title: "Week 4 (Peak Volume) - Push quality, leave 1 rep in tank",
+        targets: { biceps: { sets: 3, reps: 5 }, pushups: { sets: 3, reps: 8 }, back: { sets: 3, reps: 5 }, squats: { sets: 3, reps: 5 } }
+      },
+      5: {
+        title: "Week 5 (Deload) - Reduced volume to allow system recovery",
+        targets: { biceps: { sets: 2, reps: 3 }, pushups: { sets: 2, reps: 5 }, back: { sets: 2, reps: 3 }, squats: { sets: 2, reps: 3 } }
+      }
+    };
+
     const counts = { biceps: 0, pushups: 0, back: 0, squats: 0 };
 
     function addRep(exercise) {
       counts[exercise]++;
       document.getElementById(`done-${exercise}`).innerText = counts[exercise];
+    }
+
+    function setWeek(weekNumber) {
+      // Update Active Button styling
+      const buttons = document.querySelectorAll('.week-btn');
+      buttons.forEach((btn, idx) => {
+        if (idx === weekNumber - 1) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update Week Title Banner
+      const weekData = workoutPlan[weekNumber];
+      document.getElementById('week-title').innerText = weekData.title;
+
+      // Update Target Sets and Reps dynamically
+      for (const exercise in weekData.targets) {
+        document.getElementById(`sets-${exercise}`).innerText = weekData.targets[exercise].sets;
+        document.getElementById(`target-${exercise}`).innerText = weekData.targets[exercise].reps;
+      }
+
+      // Reset completed rep counters when switching weeks
+      for (const exercise in counts) {
+        counts[exercise] = 0;
+        document.getElementById(`done-${exercise}`).innerText = 0;
+      }
     }
   </script>
 </body>
