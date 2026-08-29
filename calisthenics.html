@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calisthenics Tracker</title>
+  <style>
+    /* CSS: Styling and Layout */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .exercise-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #fafafa;
+    }
+    .exercise-card h3 {
+      margin-top: 0;
+      color: #34495e;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .rep-count {
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>5-Week Progression Tracker</h1>
+    
+    <div class="exercise-card">
+      <h3>Biceps Pull-ups</h3>
+      <p>Target: 3 Sets × <span id="target-biceps">2</span> Reps</p>
+      <div class="controls">
+        <button onclick="addRep('biceps')">+1 Rep Completed</button>
+        <span class="rep-count">Done: <span id="done-biceps">0</span></span>
+      </div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Push-ups</h3>
+      <p>Target: 3 Sets × <span id="target-pushups">2</span> Reps</p>
+      <div class="controls">
+        <button onclick="addRep('pushups')">+1 Rep Completed</button>
+        <span class="rep-count">Done: <span id="done-pushups">0</span></span>
+      </div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Back Pull-ups</h3>
+      <p>Target: 3 Sets × <span id="target-back">2</span> Reps</p>
+      <div class="controls">
+        <button onclick="addRep('back')">+1 Rep Completed</button>
+        <span class="rep-count">Done: <span id="done-back">0</span></span>
+      </div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Dragon Squats</h3>
+      <p>Target: 3 Sets × <span id="target-squats">2</span> Reps / leg</p>
+      <div class="controls">
+        <button onclick="addRep('squats')">+1 Rep Completed</button>
+        <span class="rep-count">Done: <span id="done-squats">0</span></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const counts = { biceps: 0, pushups: 0, back: 0, squats: 0 };
+
+    function addRep(exercise) {
+      counts[exercise]++;
+      document.getElementById(`done-${exercise}`).innerText = counts[exercise];
+    }
+  </script>
+</body>
+</html>
