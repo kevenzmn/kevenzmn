@@ -127,7 +127,7 @@
     ==========================================================================
     INVISIBLE PROGRAM REFERENCE & GUIDELINES
     ==========================================================================
-    1. FREQUENCY: Train exactly 3 days per week (e.g., Sun/Tue/Thu or Mon/Wed/Fri).
+    1. FREQUENCY: Train exactly 3 days per week (e.g., Wed/Fri/Sun or Wed/Fri/Sun).
        Rest days are essential for muscle repair, tendon health, and immune recovery.
     2. PROGRESSION LOGIC:
        - Week 1: Re-entry baseline after illness (3 sets x 2 reps).
@@ -153,14 +153,14 @@
 
     <!-- Title & Date Range Display -->
     <div class="status-badge" id="week-title">
-      Week 1 (30/08 - 05/09) - Focus on control and smooth movement
+      Week 1 (02/09 - 08/09) - Focus on control and smooth movement
     </div>
 
     <!-- Active Workout Days for the Selected Week -->
     <div class="days-schedule" id="workout-days">
-      <span>Day 1: 30/08</span>
-      <span>Day 2: 01/09</span>
-      <span>Day 3: 03/09</span>
+      <span>Day 1: 02/09</span>
+      <span>Day 2: 04/09</span>
+      <span>Day 3: 06/09</span>
     </div>
     
     <!-- Exercise Cards -->
@@ -207,39 +207,39 @@
       JAVASCRIPT DATA & LOGIC EXPLANATION
       ==========================================================================
       - `workoutPlan`: Object storing exact targets, dates, and notes per week.
-      - Day Schedule starts on 30/08 and moves forward on a 3-days-per-week pattern.
+      - Day Schedule starts on 02/09 and moves forward on a 3-days-per-week pattern.
       - Week 5 drops set targets from 3 to 2 for systemic deload recovery.
       - `setWeek(num)` updates text elements and resets live counters dynamically.
       ==========================================================================
     */
     const workoutPlan = {
       1: {
-        dateRange: "30/08 - 05/09",
-        days: ["Day 1: 30/08 (Sun)", "Day 2: 01/09 (Tue)", "Day 3: 03/09 (Thu)"],
+        dateRange: "02/09 - 08/09",
+        days: ["Day 1: 02/09 (Wed)", "Day 2: 04/09 (Fri)", "Day 3: 06/09 (Sun)"],
         title: "Week 1 - Focus on control and smooth movement",
         targets: { biceps: { sets: 3, reps: 2 }, pushups: { sets: 3, reps: 2 }, back: { sets: 3, reps: 2 }, squats: { sets: 3, reps: 2 } }
       },
       2: {
-        dateRange: "06/09 - 12/09",
-        days: ["Day 1: 06/09 (Sun)", "Day 2: 08/09 (Tue)", "Day 3: 10/09 (Thu)"],
+        dateRange: "09/09 - 15/09",
+        days: ["Day 1: 09/09 (Wed)", "Day 2: 11/09 (Fri)", "Day 3: 13/09 (Sun)"],
         title: "Week 2 - Moderate volume increase",
         targets: { biceps: { sets: 3, reps: 3 }, pushups: { sets: 3, reps: 4 }, back: { sets: 3, reps: 3 }, squats: { sets: 3, reps: 3 } }
       },
       3: {
-        dateRange: "13/09 - 19/09",
-        days: ["Day 1: 13/09 (Sun)", "Day 2: 15/09 (Tue)", "Day 3: 17/09 (Thu)"],
+        dateRange: "16/09 - 22/09",
+        days: ["Day 1: 16/09 (Wed)", "Day 2: 18/09 (Fri)", "Day 3: 20/09 (Sun)"],
         title: "Week 3 - Monitor joints and form",
         targets: { biceps: { sets: 3, reps: 4 }, pushups: { sets: 3, reps: 6 }, back: { sets: 3, reps: 4 }, squats: { sets: 3, reps: 4 } }
       },
       4: {
-        dateRange: "20/09 - 26/09",
-        days: ["Day 1: 20/09 (Sun)", "Day 2: 22/09 (Tue)", "Day 3: 24/09 (Thu)"],
+        dateRange: "23/09 - 29/09",
+        days: ["Day 1: 23/09 (Wed)", "Day 2: 25/09 (Fri)", "Day 3: 27/09 (Sun)"],
         title: "Week 4 - Push quality, leave 1 rep in tank",
         targets: { biceps: { sets: 3, reps: 5 }, pushups: { sets: 3, reps: 8 }, back: { sets: 3, reps: 5 }, squats: { sets: 3, reps: 5 } }
       },
       5: {
-        dateRange: "27/09 - 03/10",
-        days: ["Day 1: 27/09 (Sun)", "Day 2: 29/09 (Tue)", "Day 3: 01/10 (Thu)"],
+        dateRange: "30/09 - 06/10",
+        days: ["Day 1: 30/09 (Wed)", "Day 2: 02/10 (Fri)", "Day 3: 04/10 (Sun)"],
         title: "Week 5 (Deload) - Reduced volume to allow system recovery",
         targets: { biceps: { sets: 2, reps: 3 }, pushups: { sets: 2, reps: 5 }, back: { sets: 2, reps: 3 }, squats: { sets: 2, reps: 3 } }
       }
