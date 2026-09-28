@@ -1,24 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
    <title>kevenzmn</title>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="description" content="This is a simple webpage with a heading.">
-   <!--<meta name="keywords" content="HTML, webpage, heading">-->
    <link rel="shortcut icon" href="https://lh3.googleusercontent.com/a/ACg8ocI__Xp7t-3AONpJLg9XnplDLXzVpmqvY7mSFGFvXmOSDhMmCg=s360-c-no" type="image/png">
-   <lk relstyleseet" href="yle.css">                
- </head>
+   <link rel="stylesheet" href="style.css">                
+</head>
 
-<body style="font-family: sans-serif; margin: 0;">
-<h1 style="padding-top: 100px; text-align: center; font-size: 220%;">(88) 99338-5821</h1>
+<body style="
+  font-family: sans-serif; 
+  margin: 0; 
+  min-height: 100vh; 
+  display: flex; 
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: #ffffff;
+">
 
-<footer style=
-  "position: fixed;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  background-color: white;">
-  <a href="index.html" style="text-decoration: none; color: black;">HOME</a>
-</footer>
+  <!-- Container central com o número e o botão -->
+  <div style="text-align: center;">
+    <h1 style="
+      font-size: clamp(2.2rem, 8vw, 4.5rem); 
+      margin: 0 0 20px 0;
+      word-break: keep-all;
+    ">
+      (88) 99338-5821
+    </h1>
+
+    <button id="btnTelaCheia" style="
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: opacity 0.2s;
+    ">
+      📱 Expandir em Tela Cheia
+    </button>
+  </div>
+
+  <footer style="
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    background-color: white;
+  ">
+    <a href="index.html" style="text-decoration: none; color: black; font-weight: bold;">HOME</a>
+  </footer>
+
+  <script>
+    const btn = document.getElementById('btnTelaCheia');
+
+    btn.addEventListener('click', () => {
+      const elem = document.documentElement;
+      
+      // Entra em tela cheia
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari / iOS */
+        elem.webkitRequestFullscreen();
+      }
+    });
+
+    // Monitora a mudança de estado da Tela Cheia
+    function checarTelaCheia() {
+      const emTelaCheia = document.fullscreenElement || document.webkitFullscreenElement;
+      
+      if (emTelaCheia) {
+        // Esconde o botão ao entrar em tela cheia
+        btn.style.display = 'none';
+      } else {
+        // Exibe o botão novamente ao sair da tela cheia
+        btn.style.display = 'inline-block';
+      }
+    }
+
+    document.addEventListener('fullscreenchange', checarTelaCheia);
+    document.addEventListener('webkitfullscreenchange', checarTelaCheia);
+  </script>
+
 </body>
+</html>
