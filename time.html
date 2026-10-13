@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIME</title>
+    <style>
+        :root {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 24px;
+            color: #ffffff;
+        }
+
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card:hover {
+            background-color: #2a2a2a;
+            border-color: #555;
+            transform: translateY(-2px);
+        }
+
+        .card:active {
+            transform: translateY(0);
+        }
+
+        .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888;
+            margin-bottom: 4px;
+        }
+
+        .value {
+            font-family: monospace;
+            font-size: 1.25rem;
+            color: #4daafc;
+            word-break: break-all;
+        }
+
+        /* Destaque especial para o card aleatório */
+        .card.random {
+            border-color: #372354;
+            background-color: #191424;
+        }
+        .card.random .value {
+            color: #d175ff;
+        }
+
+        /* Tooltip de feedback ao copiar */
+        .card::after {
+            content: "Copiado!";
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #4caf50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .card.copied::after {
+            opacity: 1;
+        }
+
+        .btn-refresh {
+            width: 100%;
+            margin-top: 16px;
+            padding: 12px;
+            background-color: #4daafc;
+            color: #121212;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-refresh:hover {
+            background-color: #3a8fd4;
+        }
+
+        .hint {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>TIME</h1>
+        
+        <div class="card-list">
+            <div class="card" onclick="copiarTexto(this, 'val1')">
+                <div class="label">Data Completa (=HOJE)</div>
+                <div id="val1" class="value">--/--/----</div>
+            </div>
+
+            <div class="card" onclick="copiarTexto(this, 'val2')">
+                <div class="label">Data Compacta (=TEXTO ddmmyyyy)</div>
+                <div id="val2" class="value">--------</div>
+            </div>
+
+            <div class="card" onclick="copiarTexto(this, 'val3')">
+                <div class="label">Data e Hora Completa (=AGORA)</div>
+                <div id="val3" class="value">--/--/---- --:--:--</div>
+            </div>
+
+            <div class="card" onclick="copiarTexto(this, 'val4')">
+                <div class="label">Data e Hora Compacta (=TEXTO ddmmyyyyhhmmss)</div>
+                <div id="val4" class="value">----------------</div>
+            </div>
+
+            <div class="card random" onclick="copiarTexto(this, 'val5')">
+                <div class="label">Sequência Aleatória (8 Caracteres Baseada na Hora)</div>
+                <div id="val5" class="value">--------</div>
+            </div>
+        </div>
+
+        <button class="btn-refresh" onclick="gerarValores()">Atualizar Valores & Hora</button>
+        <div class="hint">Clique em qualquer bloco para copiar o valor.</div>
+    </div>
+
+    <script>
+        function pad(n) {
+            return n < 10 ? '0' + n : n;
+        }
+
+        function gerarValores() {
+            const agora = new Date();
+
+            const dia = pad(agora.getDate());
+            const mes = pad(agora.getMonth() + 1);
+            const ano = agora.getFullYear();
+
+            const hora = pad(agora.getHours());
+            const min = pad(agora.getMinutes());
+            const seg = pad(agora.getSeconds());
+
+            // 1. =HOJE()
+            const formatoHoje = `${dia}/${mes}/${ano}`;
+            
+            // 2. =TEXTO(A1; "ddmmyyyy")
+            const formatoDataCompacta = `${dia}${mes}${ano}`;
+
+            // 3. =AGORA()
+            const formatoAgora = `${dia}/${mes}/${ano} ${hora}:${min}:${seg}`;
+
+            // 4. =TEXTO(A3; "ddmmyyyyhhmmss")
+            const formatoCompletoCompacto = `${dia}${mes}${ano}${hora}${min}${seg}`;
+
+            // 5. Sequência aleatória de 8 caracteres (letras maiúsculas/minúsculas, números e símbolos) baseada no horário atual
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*?_';
+            
+            // Usamos os milissegundos atuais como ponto de partida (seed) para o Math.random
+            let sementeAleatoria = agora.getTime();
+            let senhaAleatoria = '';
+            
+            for (let i = 0; i < 8; i++) {
+                // Mistura matemática simples baseada no tempo para garantir variação a cada clique
+                sementeAleatoria = (sementeAleatoria * 9301 + 49297) % 233280;
+                const rnd = sementeAleatoria / 233280;
+                const indice = Math.floor(rnd * caracteres.length);
+                senhaAleatoria += caracteres.charAt(indice);
+            }
+
+            // Inserindo nos elementos da página
+            document.getElementById('val1').innerText = formatoHoje;
+            document.getElementById('val2').innerText = formatoDataCompacta;
+            document.getElementById('val3').innerText = formatoAgora;
+            document.getElementById('val4').innerText = formatoCompletoCompacto;
+            document.getElementById('val5').innerText = senhaAleatoria;
+        }
+
+        function copiarTexto(cardElement, elementId) {
+            const textoParaCopiar = document.getElementById(elementId).innerText;
+
+            navigator.clipboard.writeText(textoParaCopiar).then(() => {
+                cardElement.classList.add('copied');
+                setTimeout(() => {
+                    cardElement.classList.remove('copied');
+                }, 1500);
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+            });
+        }
+
+        // Executa assim que a página carrega pela primeira vez
+        window.onload = gerarValores;
+    </script>
+
+</body>
+</html>
