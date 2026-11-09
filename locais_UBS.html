@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Onde está cada um – UBS</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--tx:#1b2430;--mut:#6b7684;--ln:#dde3ea;--pri:#0f766e;--prit:#fff;--busy:#fee2e2;--busyt:#b91c1c;--chip:#e6f4f2;--chipt:#0b4f49;--warn:#fef3c7;--warnt:#92400e;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161c;--card:#1a222b;--tx:#e8edf2;--mut:#93a0ae;--ln:#2a3541;--pri:#2dd4bf;--prit:#06302c;--busy:#4a1d1d;--busyt:#fca5a5;--chip:#16332f;--chipt:#a7f3e8;--warn:#3b2f12;--warnt:#fcd34d}}
+:root[data-theme="dark"]{--bg:#10161c;--card:#1a222b;--tx:#e8edf2;--mut:#93a0ae;--ln:#2a3541;--pri:#2dd4bf;--prit:#06302c;--busy:#4a1d1d;--busyt:#fca5a5;--chip:#16332f;--chipt:#a7f3e8;--warn:#3b2f12;--warnt:#fcd34d}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:40px}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:12px 14px 8px;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+h1{font-size:18px;margin:0}
+.sm{font-size:13px;color:var(--mut)}
+main{padding:0 12px;max-width:760px;margin:auto}
+.sec{margin:14px 0 6px;font-size:13px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+.room{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:10px;margin-bottom:8px}
+.room{border-left:8px solid var(--rc,var(--ln))}
+.room .chip{background:color-mix(in srgb,var(--rc) 24%,var(--card));color:var(--tx)}
+.room.busy{background:var(--busy);border-color:var(--busyt);border-left-color:var(--busyt)}
+.rz{border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:20px;padding:7px 12px;font-size:13px;font-weight:600}
+.hr{display:flex;align-items:center;gap:8px}
+.g button[data-go]:not([data-go=""]){border-left:6px solid var(--rc)}
+.rh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rn{font-weight:700}
+.tg{border:1px solid var(--ln);background:var(--card);color:var(--mut);border-radius:20px;padding:6px 12px;font-size:13px}
+.busy .tg{background:var(--busyt);color:var(--card);border-color:var(--busyt);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:4px}
+.chip{border:0;background:var(--chip);color:var(--chipt);border-radius:18px;padding:9px 14px;font-size:15px;font-weight:600}
+.chip small{font-weight:400;opacity:.85}
+.pool .chip{background:var(--card);border:1px solid var(--ln);color:var(--tx)}
+.pool.w .chip{background:var(--warn);color:var(--warnt);border:0}
+.box{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:10px;margin-bottom:8px}
+.empty{color:var(--mut);font-size:14px}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:20;align-items:flex-end;justify-content:center}
+#ov.on{display:flex}
+#sh{background:var(--card);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:16px 14px calc(16px + env(safe-area-inset-bottom,0px));max-height:88%;overflow:auto}
+#sh h2{margin:0 0 10px;font-size:18px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g button,.btn{border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:12px;padding:13px 8px;font-size:15px}
+.g button.cur{border-color:var(--pri);box-shadow:0 0 0 2px var(--pri) inset}
+.o{margin-top:10px}
+.o.w button{background:var(--warn);color:var(--warnt);border:0}
+input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-size:16px;margin:8px 0}
+.btn.p{background:var(--pri);color:var(--prit);border:0;width:100%;font-weight:700}
+.x{margin-top:8px;width:100%;background:none;border:0;color:var(--mut);padding:10px;font-size:15px}
+header{flex-wrap:wrap}.sw{flex:1 0 100%}.sw input{margin:2px 0}#res{max-height:38vh;overflow:auto}.rr{display:flex;justify-content:space-between;gap:10px;width:100%;text-align:left;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:12px;padding:11px 12px;margin-top:6px;font-size:15px}.rr b{font-weight:700}.rr span{color:var(--mut);text-align:right}
+</style>
+</head>
+<body>
+<header><div><h1>Onde está cada um</h1><span class="sm" id="cnt"></span></div><button class="rz" id="rz">↺ Zerar o dia</button><div class="sw"><input type="search" id="q" placeholder="🔍 Buscar pessoa…" autocomplete="off"><div id="res"></div></div></header>
+<main id="app"></main>
+<div id="ov"><div id="sh"></div></div>
+<script>
+var PEOPLE=["Rebeka","Flávia","Marcelina","Jéssica Téc.","Mateus","Jo","Dora","Simone","Aline","Helena","Patrícia","Alcy","Loianny","Jessika","Rosangela","Elioneide","Clariza","Dayane","Ermita","Ivete","Kamilla","Vanessa","Gil","Maria","Adriana","Celma","Welivania","Keyla","Viviane"];
+var COL=["#64748b","#2563eb","#16a34a","#4f46e5","#a8a29e","#ea580c","#ec4899","#0891b2","#a21caf","#84cc16"];
+var ROOMS=["Calçada","Recepção","Vacinas","Farmácia","Corredor","Sala de espera","Sala enfermeira","Sala médica","Procedimentos","Copa"];
+var S={loc:{},note:{},busy:{}};
+try{var raw=localStorage.getItem("ubs-v1");if(raw){var p=JSON.parse(raw);if(p&&p.loc)S=p}}catch(e){}
+for(var k in S.loc){if(S.loc[k]==="Sala enfermeira copa")S.loc[k]="Copa"}
+if(S.busy&&S.busy["Sala enfermeira copa"]){S.busy["Copa"]=true;delete S.busy["Sala enfermeira copa"]}
+function save(){try{localStorage.setItem("ubs-v1",JSON.stringify(S))}catch(e){}}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function fmt(d){if(!d)return"";var a=d.split("-");return a[2]+"/"+a[1]}
+function chip(n,extra){return '<button class="chip" data-n="'+esc(n)+'">'+esc(n)+(extra?' <small>'+esc(extra)+'</small>':'')+'</button>'}
+function list(arr,fn){return arr.length?arr.map(fn).join(""):'<span class="empty">Ninguém</span>'}
+function render(){
+ var h="",who=function(l){return PEOPLE.filter(function(n){return (S.loc[n]||"")===l})};
+ h+='<div class="sec">Salas</div>';
+ ROOMS.forEach(function(r,i){
+  var b=S.busy[r];
+  h+='<div class="room'+(b?' busy':'')+'" style="--rc:'+COL[i]+'"><div class="rh"><span class="rn">'+r+'</span><button class="tg" data-r="'+i+'">'+(b?'● Em atendimento':'Livre')+'</button></div><div class="chips">'+who(r).map(function(n){return chip(n)}).join("")+'</div></div>';
+ });
+ var free=who("");
+ h+='<div class="sec">Sem local definido ('+free.length+')</div><div class="box pool"><div class="chips">'+list(free,function(n){return chip(n)})+'</div></div>';
+ var f=who("folga");
+ h+='<div class="sec">Folga ('+f.length+')</div><div class="box pool w"><div class="chips">'+list(f,function(n){return chip(n)})+'</div></div>';
+ var v=who("ferias");
+ h+='<div class="sec">Férias ('+v.length+')</div><div class="box pool w"><div class="chips">'+list(v,function(n){return chip(n,/^\d{4}-\d\d-\d\d$/.test(S.note[n]||"")?"volta "+fmt(S.note[n]):S.note[n])})+'</div></div>';
+ var o=who("fora");
+ h+='<div class="sec">Fora ('+o.length+')</div><div class="box pool w"><div class="chips">'+list(o,function(n){return chip(n,S.note[n])})+'</div></div>';
+ document.getElementById("app").innerHTML=h;
+ document.getElementById("cnt").textContent=(PEOPLE.length-who("folga").length-v.length)+" de "+PEOPLE.length+" na unidade";
+}
+var ov=document.getElementById("ov"),sh=document.getElementById("sh");
+function close(){ov.classList.remove("on")}
+function set(n,l,note){if(l)S.loc[n]=l;else delete S.loc[n];if(note)S.note[n]=note;else delete S.note[n];save();render();close()}
+function open(n){
+ var c=S.loc[n]||"",h='<h2>'+esc(n)+'</h2><div class="g">';
+ ROOMS.forEach(function(r,i){h+='<button data-go="'+esc(r)+'" style="--rc:'+COL[i]+'"'+(c===r?' class="cur"':'')+'>'+r+'</button>'});
+ h+='</div><div class="g o w"><button data-k="folga">Folga</button><button data-k="ferias">Férias</button><button data-k="fora">Fora</button><button data-go="">Sem local</button></div><div id="ex"></div><button class="x" data-c="1">Cancelar</button>';
+ sh.innerHTML=h;ov.classList.add("on");
+ sh.onclick=function(e){var t=e.target.closest("button");if(!t)return;
+  if(t.dataset.c)return close();
+  if(t.dataset.go!==undefined)return set(n,t.dataset.go,"");
+  if(t.dataset.k==="folga")return set(n,"folga","");
+  var ex=document.getElementById("ex");
+  if(t.dataset.k==="ferias"){ex.innerHTML='<div class="sm" style="margin-top:10px">Observação das férias</div><input type="text" id="v" placeholder="Ex.: volta dia 20/12" value="'+(S.loc[n]==="ferias"?esc(S.note[n]||""):"")+'"><button class="btn p" id="ok">Salvar férias</button>';var j=document.getElementById("v");j.focus();document.getElementById("ok").onclick=function(){set(n,"ferias",j.value.trim())}}
+  if(t.dataset.k==="fora"){ex.innerHTML='<div class="sm" style="margin-top:10px">O que foi fazer?</div><input type="text" id="v" placeholder="Ex.: visita domiciliar, reunião…" value="'+(S.loc[n]==="fora"?esc(S.note[n]||""):"")+'"><button class="btn p" id="ok">Salvar</button>';var i=document.getElementById("v");i.focus();document.getElementById("ok").onclick=function(){set(n,"fora",i.value.trim())}}
+ };
+}
+document.getElementById("app").onclick=function(e){
+ var t=e.target.closest("button");if(!t)return;
+ if(t.dataset.r!==undefined){var r=ROOMS[+t.dataset.r];if(S.busy[r])delete S.busy[r];else S.busy[r]=true;save();render()}
+ else if(t.dataset.n)open(t.dataset.n);
+};
+ov.onclick=function(e){if(e.target===ov)close()};
+document.getElementById("rz").onclick=function(){
+ sh.innerHTML='<h2>Zerar o dia?</h2><p class="sm">Todos saem das salas e de “Fora”, e o atendimento é desmarcado. Folga e férias continuam como estão.</p><button class="btn p" id="zy">Sim, zerar</button><button class="x" id="zn">Cancelar</button>';ov.classList.add("on");sh.onclick=null;
+ document.getElementById("zn").onclick=close;
+ document.getElementById("zy").onclick=function(){PEOPLE.forEach(function(n){var l=S.loc[n];if(l&&l!=="folga"&&l!=="ferias"){delete S.loc[n];delete S.note[n]}});S.busy={};save();render();close()};
+};
+function nz(s){return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}
+function where(n){var l=S.loc[n]||"",t=S.note[n]||"";if(!l)return"Sem local definido";if(l==="folga")return"Folga";if(l==="ferias")return"Férias"+(t?" – "+(/^\d{4}-\d\d-\d\d$/.test(t)?"volta "+fmt(t):t):"");if(l==="fora")return"Fora"+(t?": "+t:"");return l+(S.busy[l]?" (em atendimento)":"")}
+function srch(){var q=nz(document.getElementById("q").value.trim()),r=document.getElementById("res");if(!q){r.innerHTML="";return}var m=PEOPLE.filter(function(n){return nz(n).indexOf(q)>-1});r.innerHTML=m.length?m.map(function(n){return '<button class="rr" data-n="'+esc(n)+'"><b>'+esc(n)+'</b><span>'+esc(where(n))+'</span></button>'}).join(""):'<div class="empty" style="padding:8px 2px">Ninguém encontrado</div>'}
+document.getElementById("q").oninput=srch;
+document.getElementById("res").onclick=function(e){var t=e.target.closest("button");if(t&&t.dataset.n)open(t.dataset.n)};
+var _r=render;render=function(){_r();srch()};
+render();
+</script>
+</body>
+</html>
